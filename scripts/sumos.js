@@ -6,19 +6,28 @@ class Sumo {
     this.size = 50;
     this.x = 50;
     this.y = canvas.height / 2;
-    this.isMoving = false;
-    this.speed = 1;
-    this.direction = 0;
+    this.speed = 2;
+    this.isMovingX = false;
+    this.isMovingY = false;
+    this.directionX = 0;
+    this.directionY = 0;
   }
 
   update() {
-    if (this.isMoving) this.x = this.x + this.direction * this.speed;
+    if (this.isMovingX) {
+      this.x = this.x + this.directionX * this.speed;
+    }
+    if (this.isMovingY) {
+      this.y = this.y + this.directionY * this.speed;
+    }
   }
 
   setDirection(direction) {
     // +1 down  -1 up
-    if (direction === "right") this.direction = 1;
-    else if (direction === "left") this.direction = -1;
+    if (direction === "right") this.directionX = 1;
+    else if (direction === "left") this.directionX = -1;
+    else if (direction === "up") this.directionY = -1;
+    else if (direction === "down") this.directionY = 1;
   }
 
   draw() {

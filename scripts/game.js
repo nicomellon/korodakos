@@ -18,20 +18,34 @@ class Game {
     //! MOMVEMENT Add event listener for moving the player
     this.handleKeyDown = (event) => {
       if (event.code === "ArrowRight") {
-        this.player.isMoving = true;
+        this.player.isMovingX = true;
         this.player.setDirection("right");
       } else if (event.code === "ArrowLeft") {
-        this.player.isMoving = true;
+        this.player.isMovingX = true;
         this.player.setDirection("left");
-      } else console.log(event.code);
+      } else if (event.code === "ArrowUp") {
+        this.player.isMovingY = true;
+        this.player.setDirection("up");
+      } else if (event.code === "ArrowDown") {
+        this.player.isMovingY = true;
+        this.player.setDirection("down");
+      }
     };
 
     this.handleKeyUp = (event) => {
-      if (event.code === "ArrowRight") {
-        this.player.isMoving = false;
-      } else if (event.code === "ArrowLeft") {
-        this.player.isMoving = false;
-      } else console.log(event.code);
+      if (
+        (event.code === "ArrowRight" && this.player.directionX === 1) ||
+        (event.code === "ArrowLeft" && this.player.directionX === -1)
+      ) {
+        this.player.isMovingX = false;
+        this.player.directionX = 0;
+      } else if (
+        (event.code === "ArrowUp" && this.player.directionY === -1) ||
+        (event.code === "ArrowDown" && this.player.directionY === 1)
+      ) {
+        this.player.isMovingY = false;
+        this.player.directionY = 0;
+      }
     };
     // Any function provided to eventListener
     document.body.addEventListener("keydown", this.handleKeyDown);
@@ -43,7 +57,7 @@ class Game {
 
   startLoop() {
     const loop = () => {
-      // 1. UPDATE THE STATE OF PLAYER AND WE MOVE THE OBSTACLES
+      // 1. UPDATE THE STATE OF PLAYER
       this.player.update();
 
       // 2. CLEAR THE CANVAS
