@@ -13,38 +13,40 @@ class Game {
     this.ctx = canvas.getContext("2d");
 
     // Create a new player for the current game
-    this.player = new Sumo(this.canvas);
+    this.player = new Player(this.canvas);
 
-    //! MOMVEMENT Add event listener for moving the player
+    // Add event listener for moving the player
     this.handleKeyDown = (event) => {
-      if (event.code === "ArrowRight") {
-        this.player.isMovingX = true;
-        this.player.setDirection("right");
-      } else if (event.code === "ArrowLeft") {
-        this.player.isMovingX = true;
-        this.player.setDirection("left");
-      } else if (event.code === "ArrowUp") {
-        this.player.isMovingY = true;
-        this.player.setDirection("up");
-      } else if (event.code === "ArrowDown") {
-        this.player.isMovingY = true;
-        this.player.setDirection("down");
+      switch (event.code) {
+        case "ArrowRight":
+          this.player.isMovingRight = true;
+          break;
+        case "ArrowLeft":
+          this.player.isMovingLeft = true;
+          break;
+        case "ArrowUp":
+          this.player.isMovingUp = true;
+          break;
+        case "ArrowDown":
+          this.player.isMovingDown = true;
+          break;
       }
     };
 
     this.handleKeyUp = (event) => {
-      if (
-        (event.code === "ArrowRight" && this.player.directionX === 1) ||
-        (event.code === "ArrowLeft" && this.player.directionX === -1)
-      ) {
-        this.player.isMovingX = false;
-        this.player.directionX = 0;
-      } else if (
-        (event.code === "ArrowUp" && this.player.directionY === -1) ||
-        (event.code === "ArrowDown" && this.player.directionY === 1)
-      ) {
-        this.player.isMovingY = false;
-        this.player.directionY = 0;
+      switch (event.code) {
+        case "ArrowRight":
+          this.player.isMovingRight = false;
+          break;
+        case "ArrowLeft":
+          this.player.isMovingLeft = false;
+          break;
+        case "ArrowUp":
+          this.player.isMovingUp = false;
+          break;
+        case "ArrowDown":
+          this.player.isMovingDown = false;
+          break;
       }
     };
     // Any function provided to eventListener
@@ -58,6 +60,7 @@ class Game {
   startLoop() {
     const loop = () => {
       // 1. UPDATE THE STATE OF PLAYER
+      this.player.calculateSpeed();
       this.player.update();
 
       // 2. CLEAR THE CANVAS

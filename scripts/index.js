@@ -19,7 +19,7 @@ const buildSplashScreen = () => {
 const buildGameScreen = () => {
   buildDom(`
     <div id="game-board">
-    <canvas id="canvas" width="800" height="500"></canvas>
+    <canvas id="canvas" width="700" height="700"></canvas>
     </div>  
     <button id="end-button">End Game</button>
     `);
