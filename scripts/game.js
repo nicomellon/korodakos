@@ -2,7 +2,7 @@ class Game {
   constructor() {
     this.canvas = null;
     this.ctx = null;
-    this.player = null;
+    this.playerOne = null;
     this.playerWins = false;
   }
 
@@ -13,22 +13,36 @@ class Game {
     this.ctx = canvas.getContext("2d");
 
     // Create a new player for the current game
-    this.player = new Player(this.canvas);
+    this.playerOne = new PlayerOne(this.canvas);
+    this.playerTwo = new PlayerTwo(this.canvas);
 
     // Add event listener for moving the player
     this.handleKeyDown = (event) => {
+      console.log(event.code);
       switch (event.code) {
         case "ArrowRight":
-          this.player.isMovingRight = true;
+          this.playerTwo.isMovingRight = true;
           break;
         case "ArrowLeft":
-          this.player.isMovingLeft = true;
+          this.playerTwo.isMovingLeft = true;
           break;
         case "ArrowUp":
-          this.player.isMovingUp = true;
+          this.playerTwo.isMovingUp = true;
           break;
         case "ArrowDown":
-          this.player.isMovingDown = true;
+          this.playerTwo.isMovingDown = true;
+          break;
+        case "KeyD":
+          this.playerOne.isMovingRight = true;
+          break;
+        case "KeyA":
+          this.playerOne.isMovingLeft = true;
+          break;
+        case "KeyW":
+          this.playerOne.isMovingUp = true;
+          break;
+        case "KeyS":
+          this.playerOne.isMovingDown = true;
           break;
       }
     };
@@ -36,16 +50,28 @@ class Game {
     this.handleKeyUp = (event) => {
       switch (event.code) {
         case "ArrowRight":
-          this.player.isMovingRight = false;
+          this.playerTwo.isMovingRight = false;
           break;
         case "ArrowLeft":
-          this.player.isMovingLeft = false;
+          this.playerTwo.isMovingLeft = false;
           break;
         case "ArrowUp":
-          this.player.isMovingUp = false;
+          this.playerTwo.isMovingUp = false;
           break;
         case "ArrowDown":
-          this.player.isMovingDown = false;
+          this.playerTwo.isMovingDown = false;
+          break;
+        case "KeyD":
+          this.playerOne.isMovingRight = false;
+          break;
+        case "KeyA":
+          this.playerOne.isMovingLeft = false;
+          break;
+        case "KeyW":
+          this.playerOne.isMovingUp = false;
+          break;
+        case "KeyS":
+          this.playerOne.isMovingDown = false;
           break;
       }
     };
@@ -57,18 +83,38 @@ class Game {
     this.startLoop();
   }
 
+  drawPlayers() {
+    this.ctx.fillStyle = "#66D3FA";
+    this.ctx.fillRect(
+      this.playerOne.x,
+      this.playerOne.y,
+      this.playerOne.size,
+      this.playerOne.size
+    );
+
+    this.ctx.fillStyle = "#FFA500";
+    this.ctx.fillRect(
+      this.playerTwo.x,
+      this.playerTwo.y,
+      this.playerTwo.size,
+      this.playerTwo.size
+    );
+  }
+
   startLoop() {
     const loop = () => {
-      // 1. UPDATE THE STATE OF PLAYER
-      this.player.calculateSpeed();
-      this.player.update();
+      // 1. UPDATE THE STATE OF PLAYERS
+      this.playerOne.calculateSpeed();
+      this.playerOne.update();
+      this.playerTwo.calculateSpeed();
+      this.playerTwo.update();
 
       // 2. CLEAR THE CANVAS
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
       // 3. UPDATE THE CANVAS
-      // Draw the player
-      this.player.draw();
+      // Draw the players
+      this.drawPlayers();
 
       // 4. TERMINATE LOOP IF GAME IS OVER
       if (!this.playerWins) {
