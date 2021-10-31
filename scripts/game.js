@@ -112,6 +112,37 @@ class Game {
     this.playerTwo.draw();
   }
 
+  drawPlayerInfo() {
+    // player one
+    this.ctx.textAlign = "left";
+    this.ctx.fillText(`${this.playerOne.name}`, 10, 10);
+    this.ctx.fillText(
+      `velocity (x): ${this.playerOne.velocity.x.toFixed(2)}`,
+      10,
+      20
+    );
+    this.ctx.fillText(
+      `velocity (y): ${this.playerOne.velocity.y.toFixed(2)}`,
+      10,
+      30
+    );
+    // player two
+    this.ctx.textAlign = "right";
+    this.ctx.fillText(`${this.playerTwo.name}`, 690, 10);
+    this.ctx.fillText(
+      `velocity (x): ${this.playerTwo.velocity.x.toFixed(2)}`,
+      690,
+      20
+    );
+    this.ctx.fillText(
+      `velocity (y): ${this.playerTwo.velocity.y.toFixed(2)}`,
+      690,
+      30
+    );
+
+    // this.playerTwo.drawInfo();
+  }
+
   // collission(p1, p2) {console.log("collission");}
 
   // checkCollission(p1, p2) {}
@@ -130,6 +161,7 @@ class Game {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       this.drawRing(this.canvas.width);
       this.drawPlayers();
+      this.drawPlayerInfo();
 
       // check for win
       if (!this.playerFalls) {

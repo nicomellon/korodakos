@@ -14,9 +14,9 @@ class Player {
 
   draw() {
     this.ctx.beginPath();
-    this.ctx.fillText(this.name, this.pos.x, this.pos.y);
     this.ctx.textAlign = "center";
     this.ctx.textBaseline = "middle";
+    this.ctx.fillText(this.name, this.pos.x, this.pos.y);
     this.ctx.lineWidth = 5;
     this.ctx.strokeStyle = this.color;
     this.ctx.arc(this.pos.x, this.pos.y, this.radius, 0, Math.PI * 2, false);
@@ -45,12 +45,8 @@ class Player {
 
     this.applyFriction();
 
-    // console.log(this.velocity.x, this.velocity.y);
-
     //update position
     this.pos.x += this.velocity.x;
     this.pos.y += this.velocity.y;
-
-    console.log(this.pos);
   }
 }
