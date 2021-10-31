@@ -102,6 +102,7 @@ class Game {
     this.ctx.beginPath();
     this.ctx.lineWidth = 2;
     this.ctx.strokeStyle = "black";
+    //! HARD CODED RADIUS
     this.ctx.arc(width / 2, width / 2, width / 2 - 50, 0, Math.PI * 2, false);
     this.ctx.stroke();
     this.ctx.closePath();
@@ -149,14 +150,30 @@ class Game {
       690,
       40
     );
-    // this.playerTwo.drawInfo();
+    // player distance
+    this.ctx.textAlign = "left";
+    this.ctx.fillText(
+      `player distance : ${this.getPlayerDistance(
+        this.playerOne,
+        this.playerTwo
+      ).toFixed(0)}`,
+      10,
+      80
+    );
   }
 
   // collission(p1, p2) {console.log("collission");}
 
-  // checkCollission(p1, p2) {}
+  checkCollission(distance, radiusOne, radiusTwo) {
+    if (distance <= radiusOne + radiusTwo) console.log("collission");
+  }
+
+  getPlayerDistance(p1, p2) {
+    return Math.hypot(p2.pos.x - p1.pos.x, p2.pos.y - p1.pos.y);
+  }
 
   checkFall() {
+    //! HARD CODED DISTANCE
     if (
       this.playerOne.distanceFromCenter() > 300 ||
       this.playerTwo.distanceFromCenter() > 300
@@ -171,6 +188,11 @@ class Game {
       this.playerTwo.update();
 
       // check for collission
+      this.checkCollission(
+        this.getPlayerDistance(this.playerOne, this.playerTwo),
+        this.playerOne.radius,
+        this.playerTwo.radius
+      );
       // if (this.checkCollission(this.playerOne, this.playerTwo))
       //   this.collission(this.playerOne, this.playerTwo);
 
