@@ -117,16 +117,8 @@ class Game {
     // player one
     this.ctx.textAlign = "left";
     this.ctx.fillText(`${this.playerOne.name}`, 10, 10);
-    this.ctx.fillText(
-      `velocity (x): ${this.playerOne.velocity.x.toFixed(2)}`,
-      10,
-      20
-    );
-    this.ctx.fillText(
-      `velocity (y): ${this.playerOne.velocity.y.toFixed(2)}`,
-      10,
-      30
-    );
+    this.ctx.fillText(`velocity (x): ${this.playerOne.vx.toFixed(2)}`, 10, 20);
+    this.ctx.fillText(`velocity (y): ${this.playerOne.vy.toFixed(2)}`, 10, 30);
     this.ctx.fillText(
       `distance: ${this.playerOne.distanceFromCenter().toFixed(0)}`,
       10,
@@ -135,16 +127,8 @@ class Game {
     // player two
     this.ctx.textAlign = "right";
     this.ctx.fillText(`${this.playerTwo.name}`, 690, 10);
-    this.ctx.fillText(
-      `velocity (x): ${this.playerTwo.velocity.x.toFixed(2)}`,
-      690,
-      20
-    );
-    this.ctx.fillText(
-      `velocity (y): ${this.playerTwo.velocity.y.toFixed(2)}`,
-      690,
-      30
-    );
+    this.ctx.fillText(`velocity (x): ${this.playerTwo.vx.toFixed(2)}`, 690, 20);
+    this.ctx.fillText(`velocity (y): ${this.playerTwo.vy.toFixed(2)}`, 690, 30);
     this.ctx.fillText(
       `distance: ${this.playerTwo.distanceFromCenter().toFixed(0)}`,
       690,
@@ -162,14 +146,39 @@ class Game {
     );
   }
 
-  // collission(p1, p2) {console.log("collission");}
+  collision(obj1, obj2, distance) {
+    let vCollision = { x: obj2.x - obj1.x, y: obj2.y - obj1.y };
 
-  checkCollission(distance, radiusOne, radiusTwo) {
-    if (distance <= radiusOne + radiusTwo) console.log("collission");
+    let vCollisionNorm = {
+      x: vCollision.x / distance,
+      y: vCollision.y / distance,
+    };
+
+    let vRelativeVelocity = { x: obj1.vx - obj2.vx, y: obj1.vy - obj2.vy };
+    let speed =
+      vRelativeVelocity.x * vCollisionNorm.x +
+      vRelativeVelocity.y * vCollisionNorm.y;
+
+    /* if (speed < 0){
+      break;
+    } */
+
+    obj1.vx -= speed * vCollisionNorm.x;
+    obj1.vy -= speed * vCollisionNorm.y;
+    obj2.vx += speed * vCollisionNorm.x;
+    obj2.vy += speed * vCollisionNorm.y;
   }
 
-  getPlayerDistance(p1, p2) {
-    return Math.hypot(p2.pos.x - p1.pos.x, p2.pos.y - p1.pos.y);
+  checkCollision(distance, radiusOne, radiusTwo) {
+    if (distance <= radiusOne + radiusTwo) {
+      console.log("collission");
+      this.collision(this.playerOne, this.playerTwo, distance);
+    }
+  }
+
+  // TODO refactor and make general calcDistance function
+  getPlayerDistance(obj1, obj2) {
+    return Math.hypot(obj2.x - obj1.x, obj2.y - obj1.y);
   }
 
   checkFall() {
@@ -188,7 +197,7 @@ class Game {
       this.playerTwo.update();
 
       // check for collission
-      this.checkCollission(
+      this.checkCollision(
         this.getPlayerDistance(this.playerOne, this.playerTwo),
         this.playerOne.radius,
         this.playerTwo.radius
