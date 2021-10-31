@@ -1,59 +1,81 @@
 class Player {
-  constructor(canvas, xPos, radius, color, name) {
+  constructor(canvas, x, radius, color, name) {
     this.canvas = canvas;
     this.ctx = this.canvas.getContext("2d");
     this.name = name;
     this.radius = radius;
     this.color = color;
-    this.pos = { x: xPos, y: canvas.height / 2 };
-    this.velocity = { x: 0, y: 0 };
-    this.acceleration = 0.05;
+    this.x = x;
+    this.y = canvas.height / 2;
+    this.vx = 0;
+    this.vy = 0;
+    this.mass = Math.random() * (1.5 - 0.5) + 0.5;
+    this.acceleration = 0.1;
     this.direction = { x: 0, y: 0 };
-    this.friction = 0.02;
+    this.speed = 0;
+    this.angle = { radians: 0, degrees: 0 };
+    this.friction = 0.05;
   }
 
   draw() {
+    // draw player circle
     this.ctx.beginPath();
-    this.ctx.textAlign = "center";
-    this.ctx.textBaseline = "middle";
-    this.ctx.fillText(this.name, this.pos.x, this.pos.y);
     this.ctx.lineWidth = 5;
     this.ctx.strokeStyle = this.color;
-    this.ctx.arc(this.pos.x, this.pos.y, this.radius, 0, Math.PI * 2, false);
+    this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
     this.ctx.stroke();
+    this.ctx.closePath();
+    // draw player name
+    this.ctx.textAlign = "center";
+    this.ctx.textBaseline = "middle";
+    this.ctx.fillText(this.name, this.x, this.y);
+    // Draw heading vector
+    this.ctx.beginPath();
+    this.ctx.lineWidth = 2;
+    this.ctx.strokeStyle = "black";
+    // this.ctx.arc(this.x, this.y, Math.abs(this.vx * 10));
+    this.ctx.moveTo(this.x, this.y);
+    this.ctx.lineTo(this.x + this.vx * 10, this.y + this.vy * 10);
+    this.ctx.stroke();
+
     this.ctx.closePath();
   }
 
-  applyFriction() {
-    let speed = Math.sqrt(
-      this.velocity.x * this.velocity.x + this.velocity.y * this.velocity.y
-    );
-    const angle = Math.atan2(this.velocity.y, this.velocity.x);
-    if (speed > this.friction) {
-      speed -= this.friction;
-    } else {
+  applyFriction(speed, angle, friction) {
+    if (speed > friction) {
+      speed -= friction;
+    } /* else { 
       speed = 0;
-    }
-    this.velocity.x = Math.cos(angle) * speed;
-    this.velocity.y = Math.sin(angle) * speed;
+    } */
+    // code above was making collisions boring, completely stopping players
+    this.vx = Math.cos(angle) * speed;
+    this.vy = Math.sin(angle) * speed;
   }
 
+  // TODO refactor and make general calcDistance function
   distanceFromCenter() {
     return Math.hypot(
-      this.canvas.width / 2 - this.pos.x,
-      this.canvas.width / 2 - this.pos.y
+      this.canvas.width / 2 - this.x,
+      this.canvas.width / 2 - this.y
     );
   }
 
   update() {
     //update velocity
-    this.velocity.x += this.acceleration * this.direction.x;
-    this.velocity.y += this.acceleration * this.direction.y;
+    this.vx += this.acceleration * this.direction.x;
+    this.vy += this.acceleration * this.direction.y;
 
-    this.applyFriction();
+    this.speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+
+    // Calculate the angle
+    this.angle.radians = Math.atan2(this.vy, this.vx);
+    this.angle.degrees = (180 * this.angle.radians) / Math.PI;
+
+    // apply friction
+    this.applyFriction(this.speed, this.angle.radians, this.friction);
 
     //update position
-    this.pos.x += this.velocity.x;
-    this.pos.y += this.velocity.y;
+    this.x += this.vx;
+    this.y += this.vy;
   }
 }

@@ -117,23 +117,25 @@ class Game {
     // player one
     this.ctx.textAlign = "left";
     this.ctx.fillText(`${this.playerOne.name}`, 10, 10);
-    this.ctx.fillText(`velocity (x): ${this.playerOne.vx.toFixed(2)}`, 10, 20);
-    this.ctx.fillText(`velocity (y): ${this.playerOne.vy.toFixed(2)}`, 10, 30);
+    this.ctx.fillText(`speed: ${this.playerOne.speed.toFixed(2)}`, 10, 20);
     this.ctx.fillText(
       `distance: ${this.playerOne.distanceFromCenter().toFixed(0)}`,
       10,
-      40
+      30
     );
+    this.ctx.fillText(`mass: ${this.playerOne.mass}`, 10, 40);
+    this.ctx.fillText(`acceleration: ${this.playerOne.acceleration}`, 10, 50);
     // player two
     this.ctx.textAlign = "right";
     this.ctx.fillText(`${this.playerTwo.name}`, 690, 10);
-    this.ctx.fillText(`velocity (x): ${this.playerTwo.vx.toFixed(2)}`, 690, 20);
-    this.ctx.fillText(`velocity (y): ${this.playerTwo.vy.toFixed(2)}`, 690, 30);
+    this.ctx.fillText(`speed: ${this.playerTwo.speed.toFixed(2)}`, 690, 20);
     this.ctx.fillText(
       `distance: ${this.playerTwo.distanceFromCenter().toFixed(0)}`,
       690,
-      40
+      30
     );
+    this.ctx.fillText(`mass: ${this.playerTwo.mass}`, 690, 40);
+    this.ctx.fillText(`acceleration: ${this.playerTwo.acceleration}`, 690, 50);
     // player distance
     this.ctx.textAlign = "left";
     this.ctx.fillText(
@@ -163,10 +165,11 @@ class Game {
       break;
     } */
 
-    obj1.vx -= speed * vCollisionNorm.x;
-    obj1.vy -= speed * vCollisionNorm.y;
-    obj2.vx += speed * vCollisionNorm.x;
-    obj2.vy += speed * vCollisionNorm.y;
+    let impulse = (2 * speed) / (obj1.mass + obj2.mass);
+    obj1.vx -= impulse * obj2.mass * vCollisionNorm.x;
+    obj1.vy -= impulse * obj2.mass * vCollisionNorm.y;
+    obj2.vx += impulse * obj1.mass * vCollisionNorm.x;
+    obj2.vy += impulse * obj1.mass * vCollisionNorm.y;
   }
 
   checkCollision(distance, radiusOne, radiusTwo) {
