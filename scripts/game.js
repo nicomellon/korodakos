@@ -3,6 +3,7 @@ class Game {
     this.canvas = null;
     this.ctx = null;
     this.playerOne = null;
+    this.playerTwo = null;
     this.playerWins = false;
   }
 
@@ -18,60 +19,63 @@ class Game {
 
     // Add event listener for moving the player
     this.handleKeyDown = (event) => {
-      console.log(event.code);
       switch (event.code) {
-        case "ArrowRight":
-          this.playerTwo.isMovingRight = true;
-          break;
-        case "ArrowLeft":
-          this.playerTwo.isMovingLeft = true;
-          break;
-        case "ArrowUp":
-          this.playerTwo.isMovingUp = true;
-          break;
-        case "ArrowDown":
-          this.playerTwo.isMovingDown = true;
-          break;
+        // player one controls
         case "KeyD":
-          this.playerOne.isMovingRight = true;
+          this.playerOne.direction.x = 1;
           break;
         case "KeyA":
-          this.playerOne.isMovingLeft = true;
+          this.playerOne.direction.x = -1;
           break;
         case "KeyW":
-          this.playerOne.isMovingUp = true;
+          this.playerOne.direction.y = -1;
           break;
         case "KeyS":
-          this.playerOne.isMovingDown = true;
+          this.playerOne.direction.y = 1;
+          break;
+        // player two controls
+        case "ArrowRight":
+          this.playerTwo.direction.x = 1;
+          break;
+        case "ArrowLeft":
+          this.playerTwo.direction.x = -1;
+          break;
+        case "ArrowUp":
+          this.playerTwo.direction.y = -1;
+          break;
+        case "ArrowDown":
+          this.playerTwo.direction.y = 1;
           break;
       }
     };
 
     this.handleKeyUp = (event) => {
       switch (event.code) {
-        case "ArrowRight":
-          this.playerTwo.isMovingRight = false;
-          break;
-        case "ArrowLeft":
-          this.playerTwo.isMovingLeft = false;
-          break;
-        case "ArrowUp":
-          this.playerTwo.isMovingUp = false;
-          break;
-        case "ArrowDown":
-          this.playerTwo.isMovingDown = false;
-          break;
+        // player one controls
         case "KeyD":
-          this.playerOne.isMovingRight = false;
+          this.playerOne.direction.x = 0;
           break;
         case "KeyA":
-          this.playerOne.isMovingLeft = false;
+          this.playerOne.direction.x = 0;
           break;
         case "KeyW":
-          this.playerOne.isMovingUp = false;
+          this.playerOne.direction.y = 0;
           break;
         case "KeyS":
-          this.playerOne.isMovingDown = false;
+          this.playerOne.direction.y = 0;
+          break;
+        // player two controls
+        case "ArrowRight":
+          this.playerTwo.direction.x = 0;
+          break;
+        case "ArrowLeft":
+          this.playerTwo.direction.x = 0;
+          break;
+        case "ArrowUp":
+          this.playerTwo.direction.y = 0;
+          break;
+        case "ArrowDown":
+          this.playerTwo.direction.y = 0;
           break;
       }
     };
@@ -84,6 +88,7 @@ class Game {
   }
 
   drawPlayers() {
+    // draw player one
     this.ctx.fillStyle = "#66D3FA";
     this.ctx.fillRect(
       this.playerOne.x,
@@ -92,6 +97,7 @@ class Game {
       this.playerOne.size
     );
 
+    // draw player two
     this.ctx.fillStyle = "#FFA500";
     this.ctx.fillRect(
       this.playerTwo.x,
@@ -101,22 +107,40 @@ class Game {
     );
   }
 
+  collission(p1, p2) {
+    console.log("collission");
+  }
+
+  checkCollission(p1, p2) {
+    if (
+      p1.x + p1.size >= p2.x &&
+      p1.y + p1.size > p2.y &&
+      p1.y < p2.y + p2.size &&
+      p1.x <= p2.x + p2.size &&
+      p1.y + p1.size > p2.y &&
+      p1.y < p2.y + p2.size
+    ) {
+      this.collission();
+    } else {
+      return false;
+    }
+  }
+
   startLoop() {
     const loop = () => {
-      // 1. UPDATE THE STATE OF PLAYERS
-      this.playerOne.calculateSpeed();
+      // update state of players
       this.playerOne.update();
-      this.playerTwo.calculateSpeed();
       this.playerTwo.update();
 
-      // 2. CLEAR THE CANVAS
-      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      // check for collission
+      if (this.checkCollission(this.playerOne, this.playerTwo))
+        this.collission(this.playerOne, this.playerTwo);
 
-      // 3. UPDATE THE CANVAS
-      // Draw the players
+      // update the canvas
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       this.drawPlayers();
 
-      // 4. TERMINATE LOOP IF GAME IS OVER
+      // check for win
       if (!this.playerWins) {
         window.requestAnimationFrame(loop);
       } else {
