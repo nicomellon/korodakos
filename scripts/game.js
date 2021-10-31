@@ -2,8 +2,7 @@ class Game {
   constructor() {
     this.canvas = null;
     this.ctx = null;
-    this.players = [];
-    this.playerFalls = false;
+    this.playerDies = false;
   }
 
   start() {
@@ -12,17 +11,21 @@ class Game {
     this.canvas = document.querySelector("canvas");
     this.ctx = canvas.getContext("2d");
 
+    // player start positions
+    this.startPosOne = this.canvas.width / 4;
+    this.startPosTwo = (this.canvas.width * 3) / 4;
+
     // create players
     this.playerOne = new Player(
       this.canvas,
-      this.canvas.width / 4,
+      this.startPosOne,
       25,
       "#66D3FA",
       "p1"
     );
     this.playerTwo = new Player(
       this.canvas,
-      (this.canvas.width * 3) / 4,
+      this.startPosTwo,
       25,
       "#FFA500",
       "p2"
@@ -123,8 +126,13 @@ class Game {
       10,
       30
     );
-    this.ctx.fillText(`mass: ${this.playerOne.mass}`, 10, 40);
-    this.ctx.fillText(`acceleration: ${this.playerOne.acceleration}`, 10, 50);
+    this.ctx.fillText(`mass: ${this.playerOne.mass.toFixed(2)}`, 10, 40);
+    this.ctx.fillText(
+      `acceleration: ${this.playerOne.acceleration.toFixed(2)}`,
+      10,
+      50
+    );
+    this.ctx.fillText(`lives: ${this.playerOne.lives}`, 10, 690);
     // player two
     this.ctx.textAlign = "right";
     this.ctx.fillText(`${this.playerTwo.name}`, 690, 10);
@@ -134,30 +142,25 @@ class Game {
       690,
       30
     );
-    this.ctx.fillText(`mass: ${this.playerTwo.mass}`, 690, 40);
-    this.ctx.fillText(`acceleration: ${this.playerTwo.acceleration}`, 690, 50);
-    // player distance
-    this.ctx.textAlign = "left";
+    this.ctx.fillText(`mass: ${this.playerTwo.mass.toFixed(2)}`, 690, 40);
     this.ctx.fillText(
-      `player distance : ${this.getPlayerDistance(
-        this.playerOne,
-        this.playerTwo
-      ).toFixed(0)}`,
-      10,
-      80
+      `acceleration: ${this.playerTwo.acceleration.toFixed(2)}`,
+      690,
+      50
     );
+    this.ctx.fillText(`lives: ${this.playerTwo.lives}`, 690, 690);
   }
 
   collision(obj1, obj2, distance) {
-    let vCollision = { x: obj2.x - obj1.x, y: obj2.y - obj1.y };
+    const vCollision = { x: obj2.x - obj1.x, y: obj2.y - obj1.y };
 
-    let vCollisionNorm = {
+    const vCollisionNorm = {
       x: vCollision.x / distance,
       y: vCollision.y / distance,
     };
 
-    let vRelativeVelocity = { x: obj1.vx - obj2.vx, y: obj1.vy - obj2.vy };
-    let speed =
+    const vRelativeVelocity = { x: obj1.vx - obj2.vx, y: obj1.vy - obj2.vy };
+    const speed =
       vRelativeVelocity.x * vCollisionNorm.x +
       vRelativeVelocity.y * vCollisionNorm.y;
 
@@ -165,7 +168,7 @@ class Game {
       break;
     } */
 
-    let impulse = (2 * speed) / (obj1.mass + obj2.mass);
+    const impulse = (2 * speed) / (obj1.mass + obj2.mass);
     obj1.vx -= impulse * obj2.mass * vCollisionNorm.x;
     obj1.vy -= impulse * obj2.mass * vCollisionNorm.y;
     obj2.vx += impulse * obj1.mass * vCollisionNorm.x;
@@ -184,13 +187,20 @@ class Game {
     return Math.hypot(obj2.x - obj1.x, obj2.y - obj1.y);
   }
 
-  checkFall() {
-    //! HARD CODED DISTANCE
-    if (
-      this.playerOne.distanceFromCenter() > 300 ||
-      this.playerTwo.distanceFromCenter() > 300
-    )
-      this.playerFalls = true;
+  checkWin() {
+    if (this.playerOne.lives <= 0) this.playerDies = true;
+  }
+
+  resetPlayers() {
+    this.playerOne.x = this.startPosOne;
+    this.playerOne.y = this.canvas.height / 2;
+    this.playerOne.vx = 0;
+    this.playerOne.vy = 0;
+
+    this.playerTwo.x = this.startPosTwo;
+    this.playerTwo.y = this.canvas.height / 2;
+    this.playerTwo.vx = 0;
+    this.playerTwo.vy = 0;
   }
 
   startLoop() {
@@ -214,9 +224,18 @@ class Game {
       this.drawPlayers();
       this.drawPlayerInfo();
 
+      // check falls
+      if (this.playerOne.checkFall()) {
+        this.playerOne.lives--;
+        this.resetPlayers();
+      } else if (this.playerTwo.checkFall()) {
+        this.playerTwo.lives--;
+        this.resetPlayers();
+      }
+
       // check for win
-      this.checkFall();
-      if (!this.playerFalls) {
+      this.checkWin();
+      if (!this.playerDies) {
         window.requestAnimationFrame(loop);
       } else {
         buildGameOver();

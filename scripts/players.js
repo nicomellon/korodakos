@@ -10,11 +10,12 @@ class Player {
     this.vx = 0;
     this.vy = 0;
     this.mass = Math.random() * (1.5 - 0.5) + 0.5;
-    this.acceleration = 0.1;
+    this.acceleration = 0.12 / this.mass;
     this.direction = { x: 0, y: 0 };
     this.speed = 0;
     this.angle = { radians: 0, degrees: 0 };
     this.friction = 0.05;
+    this.lives = 3;
   }
 
   draw() {
@@ -41,6 +42,21 @@ class Player {
     this.ctx.closePath();
   }
 
+  checkFall() {
+    //! hard coded distance
+    if (this.distanceFromCenter() >= 300) {
+      return true;
+    } else return false;
+  }
+
+  // TODO refactor and make general calcDistance function
+  distanceFromCenter() {
+    return Math.hypot(
+      this.canvas.width / 2 - this.x,
+      this.canvas.width / 2 - this.y
+    );
+  }
+
   applyFriction(speed, angle, friction) {
     if (speed > friction) {
       speed -= friction;
@@ -52,14 +68,6 @@ class Player {
     this.vy = Math.sin(angle) * speed;
   }
 
-  // TODO refactor and make general calcDistance function
-  distanceFromCenter() {
-    return Math.hypot(
-      this.canvas.width / 2 - this.x,
-      this.canvas.width / 2 - this.y
-    );
-  }
-
   update() {
     //update velocity
     this.vx += this.acceleration * this.direction.x;
@@ -67,7 +75,7 @@ class Player {
 
     this.speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
 
-    // Calculate the angle
+    // Calculate the angle for adding images later
     this.angle.radians = Math.atan2(this.vy, this.vx);
     this.angle.degrees = (180 * this.angle.radians) / Math.PI;
 
