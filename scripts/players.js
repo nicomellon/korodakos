@@ -38,6 +38,13 @@ class Player {
     this.velocity.y = Math.sin(angle) * speed;
   }
 
+  distanceFromCenter() {
+    return Math.hypot(
+      this.canvas.width / 2 - this.pos.x,
+      this.canvas.width / 2 - this.pos.y
+    );
+  }
+
   update() {
     //update velocity
     this.velocity.x += this.acceleration * this.direction.x;

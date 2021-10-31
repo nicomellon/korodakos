@@ -102,7 +102,7 @@ class Game {
     this.ctx.beginPath();
     this.ctx.lineWidth = 2;
     this.ctx.strokeStyle = "black";
-    this.ctx.arc(width / 2, width / 2, width / 2, 0, Math.PI * 2, false);
+    this.ctx.arc(width / 2, width / 2, width / 2 - 50, 0, Math.PI * 2, false);
     this.ctx.stroke();
     this.ctx.closePath();
   }
@@ -126,6 +126,11 @@ class Game {
       10,
       30
     );
+    this.ctx.fillText(
+      `distance: ${this.playerOne.distanceFromCenter().toFixed(0)}`,
+      10,
+      40
+    );
     // player two
     this.ctx.textAlign = "right";
     this.ctx.fillText(`${this.playerTwo.name}`, 690, 10);
@@ -139,13 +144,25 @@ class Game {
       690,
       30
     );
-
+    this.ctx.fillText(
+      `distance: ${this.playerTwo.distanceFromCenter().toFixed(0)}`,
+      690,
+      40
+    );
     // this.playerTwo.drawInfo();
   }
 
   // collission(p1, p2) {console.log("collission");}
 
   // checkCollission(p1, p2) {}
+
+  checkFall() {
+    if (
+      this.playerOne.distanceFromCenter() > 300 ||
+      this.playerTwo.distanceFromCenter() > 300
+    )
+      this.playerFalls = true;
+  }
 
   startLoop() {
     const loop = () => {
@@ -164,6 +181,7 @@ class Game {
       this.drawPlayerInfo();
 
       // check for win
+      this.checkFall();
       if (!this.playerFalls) {
         window.requestAnimationFrame(loop);
       } else {
