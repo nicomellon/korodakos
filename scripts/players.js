@@ -1,15 +1,27 @@
 class Player {
-  constructor(canvas) {
+  constructor(canvas, xPos, radius, color, name) {
     this.canvas = canvas;
     this.ctx = this.canvas.getContext("2d");
-    this.size = 40;
-    this.y = canvas.height / 2;
+    this.name = name;
+    this.radius = radius;
+    this.color = color;
+    this.pos = { x: xPos, y: canvas.height / 2 };
     this.velocity = { x: 0, y: 0 };
     this.acceleration = 0.05;
     this.direction = { x: 0, y: 0 };
-    // this.keyDown = { right: false, left: false, down: false, up: false };
-    this.maxSpeed = 3;
     this.friction = 0.02;
+  }
+
+  draw() {
+    this.ctx.beginPath();
+    this.ctx.fillText(this.name, this.pos.x, this.pos.y);
+    this.ctx.textAlign = "center";
+    this.ctx.textBaseline = "middle";
+    this.ctx.lineWidth = 5;
+    this.ctx.strokeStyle = this.color;
+    this.ctx.arc(this.pos.x, this.pos.y, this.radius, 0, Math.PI * 2, false);
+    this.ctx.stroke();
+    this.ctx.closePath();
   }
 
   applyFriction() {
@@ -33,24 +45,12 @@ class Player {
 
     this.applyFriction();
 
-    console.log(this.velocity.x, this.velocity.y);
+    // console.log(this.velocity.x, this.velocity.y);
 
     //update position
-    this.x += this.velocity.x;
-    this.y += this.velocity.y;
-  }
-}
+    this.pos.x += this.velocity.x;
+    this.pos.y += this.velocity.y;
 
-class PlayerOne extends Player {
-  constructor(canvas) {
-    super(canvas);
-    this.x = canvas.width / 4;
-  }
-}
-
-class PlayerTwo extends Player {
-  constructor(canvas) {
-    super(canvas);
-    this.x = (canvas.width * 3) / 4;
+    console.log(this.pos);
   }
 }

@@ -2,9 +2,8 @@ class Game {
   constructor() {
     this.canvas = null;
     this.ctx = null;
-    this.playerOne = null;
-    this.playerTwo = null;
-    this.playerWins = false;
+    this.players = [];
+    this.playerFalls = false;
   }
 
   start() {
@@ -13,9 +12,21 @@ class Game {
     this.canvas = document.querySelector("canvas");
     this.ctx = canvas.getContext("2d");
 
-    // Create a new player for the current game
-    this.playerOne = new PlayerOne(this.canvas);
-    this.playerTwo = new PlayerTwo(this.canvas);
+    // create players
+    this.playerOne = new Player(
+      this.canvas,
+      this.canvas.width / 4,
+      25,
+      "#66D3FA",
+      "p1"
+    );
+    this.playerTwo = new Player(
+      this.canvas,
+      (this.canvas.width * 3) / 4,
+      25,
+      "#FFA500",
+      "p2"
+    );
 
     // Add event listener for moving the player
     this.handleKeyDown = (event) => {
@@ -87,44 +98,23 @@ class Game {
     this.startLoop();
   }
 
+  drawRing(width) {
+    this.ctx.beginPath();
+    this.ctx.lineWidth = 2;
+    this.ctx.strokeStyle = "black";
+    this.ctx.arc(width / 2, width / 2, width / 2, 0, Math.PI * 2, false);
+    this.ctx.stroke();
+    this.ctx.closePath();
+  }
+
   drawPlayers() {
-    // draw player one
-    this.ctx.fillStyle = "#66D3FA";
-    this.ctx.fillRect(
-      this.playerOne.x,
-      this.playerOne.y,
-      this.playerOne.size,
-      this.playerOne.size
-    );
-
-    // draw player two
-    this.ctx.fillStyle = "#FFA500";
-    this.ctx.fillRect(
-      this.playerTwo.x,
-      this.playerTwo.y,
-      this.playerTwo.size,
-      this.playerTwo.size
-    );
+    this.playerOne.draw();
+    this.playerTwo.draw();
   }
 
-  collission(p1, p2) {
-    console.log("collission");
-  }
+  // collission(p1, p2) {console.log("collission");}
 
-  checkCollission(p1, p2) {
-    if (
-      p1.x + p1.size >= p2.x &&
-      p1.y + p1.size > p2.y &&
-      p1.y < p2.y + p2.size &&
-      p1.x <= p2.x + p2.size &&
-      p1.y + p1.size > p2.y &&
-      p1.y < p2.y + p2.size
-    ) {
-      this.collission();
-    } else {
-      return false;
-    }
-  }
+  // checkCollission(p1, p2) {}
 
   startLoop() {
     const loop = () => {
@@ -133,15 +123,16 @@ class Game {
       this.playerTwo.update();
 
       // check for collission
-      if (this.checkCollission(this.playerOne, this.playerTwo))
-        this.collission(this.playerOne, this.playerTwo);
+      // if (this.checkCollission(this.playerOne, this.playerTwo))
+      //   this.collission(this.playerOne, this.playerTwo);
 
       // update the canvas
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      this.drawRing(this.canvas.width);
       this.drawPlayers();
 
       // check for win
-      if (!this.playerWins) {
+      if (!this.playerFalls) {
         window.requestAnimationFrame(loop);
       } else {
         buildGameOver();
