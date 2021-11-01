@@ -25,27 +25,31 @@ const buildGameScreen = () => {
     `);
 
   const endButton = document.getElementById("end-button");
-  endButton.addEventListener("click", buildGameOver);
+  endButton.addEventListener("click", buildWinScreen);
 
   const game = new Game();
   game.start();
 };
 
 // Third Screen => Game Over
-const buildGameOver = () => {
+const buildWinScreen = (winner) => {
   buildDom(`
     <section class="game-over">
-    <h1>Game Over</h1>
-    <button id = "game"> TRY AGAIN</button>
+    <h1>${winner} wins!</h1>
+    <button id = "restart-game"> TRY AGAIN</button>
     <div class= "pointer"> </div>
     </section>
     `);
 
+  /* const newGame = document.createElement("script");
+  newGame.src = "scripts/game.js";
+  document.head.appendChild(newGame); */
+
   const restartButton = document.querySelector("button");
-  restartButton.addEventListener("click", buildGameScreen);
+  restartButton.addEventListener("click", buildSplashScreen);
 };
 
 // When the window loads, then we will run the "buildSplashScreen" function
 // "load" waits for the html and JS
-//! window.addEventListener("load", buildSplashScreen);
-window.addEventListener("load", buildGameScreen);
+window.addEventListener("load", buildSplashScreen);
+// window.addEventListener("load", buildGameScreen);

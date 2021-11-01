@@ -10,7 +10,7 @@ class Player {
     this.vx = 0;
     this.vy = 0;
     this.mass = Math.random() * (1.5 - 0.5) + 0.5;
-    this.acceleration = 0.12 / this.mass;
+    this.acceleration = 0.15 / this.mass;
     this.direction = { x: 0, y: 0 };
     this.speed = 0;
     this.angle = { radians: 0, degrees: 0 };
@@ -45,6 +45,7 @@ class Player {
   checkFall() {
     //! hard coded distance
     if (this.distanceFromCenter() >= 300) {
+      this.lives--;
       return true;
     } else return false;
   }

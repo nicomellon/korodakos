@@ -3,6 +3,7 @@ class Game {
     this.canvas = null;
     this.ctx = null;
     this.playerDies = false;
+    this.controls = false;
   }
 
   start() {
@@ -32,73 +33,85 @@ class Game {
     );
 
     // Add event listener for moving the player
-    this.handleKeyDown = (event) => {
-      switch (event.code) {
-        // player one controls
-        case "KeyD":
-          this.playerOne.direction.x = 1;
-          break;
-        case "KeyA":
-          this.playerOne.direction.x = -1;
-          break;
-        case "KeyW":
-          this.playerOne.direction.y = -1;
-          break;
-        case "KeyS":
-          this.playerOne.direction.y = 1;
-          break;
-        // player two controls
-        case "ArrowRight":
-          this.playerTwo.direction.x = 1;
-          break;
-        case "ArrowLeft":
-          this.playerTwo.direction.x = -1;
-          break;
-        case "ArrowUp":
-          this.playerTwo.direction.y = -1;
-          break;
-        case "ArrowDown":
-          this.playerTwo.direction.y = 1;
-          break;
+    const handleKeyDown = (event) => {
+      if (this.controls === true) {
+        switch (event.code) {
+          // player one controls
+          case "KeyD":
+            this.playerOne.direction.x = 1;
+            break;
+          case "KeyA":
+            this.playerOne.direction.x = -1;
+            break;
+          case "KeyW":
+            this.playerOne.direction.y = -1;
+            break;
+          case "KeyS":
+            this.playerOne.direction.y = 1;
+            break;
+          // player two controls
+          case "ArrowRight":
+            this.playerTwo.direction.x = 1;
+            break;
+          case "ArrowLeft":
+            this.playerTwo.direction.x = -1;
+            break;
+          case "ArrowUp":
+            this.playerTwo.direction.y = -1;
+            break;
+          case "ArrowDown":
+            this.playerTwo.direction.y = 1;
+            break;
+        }
       }
     };
 
-    this.handleKeyUp = (event) => {
-      switch (event.code) {
-        // player one controls
-        case "KeyD":
-          this.playerOne.direction.x = 0;
-          break;
-        case "KeyA":
-          this.playerOne.direction.x = 0;
-          break;
-        case "KeyW":
-          this.playerOne.direction.y = 0;
-          break;
-        case "KeyS":
-          this.playerOne.direction.y = 0;
-          break;
-        // player two controls
-        case "ArrowRight":
-          this.playerTwo.direction.x = 0;
-          break;
-        case "ArrowLeft":
-          this.playerTwo.direction.x = 0;
-          break;
-        case "ArrowUp":
-          this.playerTwo.direction.y = 0;
-          break;
-        case "ArrowDown":
-          this.playerTwo.direction.y = 0;
-          break;
+    const handleKeyUp = (event) => {
+      if (this.controls === true) {
+        switch (event.code) {
+          // player one controls
+          case "KeyD":
+            this.playerOne.direction.x = 0;
+            break;
+          case "KeyA":
+            this.playerOne.direction.x = 0;
+            break;
+          case "KeyW":
+            this.playerOne.direction.y = 0;
+            break;
+          case "KeyS":
+            this.playerOne.direction.y = 0;
+            break;
+          // player two controls
+          case "ArrowRight":
+            this.playerTwo.direction.x = 0;
+            break;
+          case "ArrowLeft":
+            this.playerTwo.direction.x = 0;
+            break;
+          case "ArrowUp":
+            this.playerTwo.direction.y = 0;
+            break;
+          case "ArrowDown":
+            this.playerTwo.direction.y = 0;
+            break;
+        }
       }
     };
     // Any function provided to eventListener
-    document.body.addEventListener("keydown", this.handleKeyDown);
-    document.body.addEventListener("keyup", this.handleKeyUp);
+    document.body.addEventListener("keydown", handleKeyDown);
+    document.body.addEventListener("keyup", handleKeyUp);
 
     // Start the canvas requestAnimationFrame loop
     this.startLoop();
+  }
+
+  enableControls() {
+    this.controls = true;
+  }
+
+  disableControls() {
+    this.controls = false;
   }
 
   drawRing(width) {
@@ -132,6 +145,7 @@ class Game {
       10,
       50
     );
+    this.ctx.fillText(`controls: ${this.controls}`, 10, 80);
     this.ctx.fillText(`lives: ${this.playerOne.lives}`, 10, 690);
     // player two
     this.ctx.textAlign = "right";
@@ -188,22 +202,32 @@ class Game {
   }
 
   checkWin() {
-    if (this.playerOne.lives <= 0) this.playerDies = true;
+    if (this.playerOne.lives <= 0) buildWinScreen(this.playerTwo.name);
+    else if (this.playerTwo.lives <= 0) buildWinScreen(this.playerOne.name);
   }
 
   resetPlayers() {
+    // reset player one
     this.playerOne.x = this.startPosOne;
     this.playerOne.y = this.canvas.height / 2;
     this.playerOne.vx = 0;
     this.playerOne.vy = 0;
+    this.playerOne.direction.x = 0;
+    this.playerOne.direction.y = 0;
 
+    // reset player two
     this.playerTwo.x = this.startPosTwo;
     this.playerTwo.y = this.canvas.height / 2;
     this.playerTwo.vx = 0;
     this.playerTwo.vy = 0;
+    this.playerTwo.direction.x = 0;
+    this.playerTwo.direction.y = 0;
   }
 
   startLoop() {
+    // enable controls after 3 seconds
+    setTimeout(() => this.enableControls(), 3 * 1000);
+
     const loop = () => {
       // update state of players
       this.playerOne.update();
@@ -225,21 +249,15 @@ class Game {
       this.drawPlayerInfo();
 
       // check falls
-      if (this.playerOne.checkFall()) {
-        this.playerOne.lives--;
+      if (this.playerOne.checkFall() || this.playerTwo.checkFall()) {
         this.resetPlayers();
-      } else if (this.playerTwo.checkFall()) {
-        this.playerTwo.lives--;
-        this.resetPlayers();
+        this.disableControls();
+        setTimeout(() => this.enableControls(), 1 * 1000);
       }
 
       // check for win
       this.checkWin();
-      if (!this.playerDies) {
-        window.requestAnimationFrame(loop);
-      } else {
-        buildGameOver();
-      }
+      window.requestAnimationFrame(loop);
     };
 
     // As loop function will be continuously invoked by
