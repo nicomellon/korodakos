@@ -1,55 +1,62 @@
-// General function that will update the HTML content dinamically
-const buildDom = (html) => {
-  const main = document.querySelector("main");
-  main.innerHTML = html;
+// game-board div
+const gameBoard = document.querySelector("#game-board");
+const loadScreenBtn = document.querySelector("#load-screen");
+
+const loadScreen = () => {
+  clearBoard();
+  const gameState = gameBoard.dataset.screen;
+
+  switch (gameState) {
+    case "splash-screen":
+      buildGameScreen();
+      break;
+    case "game-screen":
+      buildSplashScreen();
+      break;
+    case "win-screen":
+      console.log(gameState);
+      buildSplashScreen();
+      break;
+  }
 };
+
+const clearBoard = () =>
+  gameBoard.childNodes.forEach((child) => gameBoard.removeChild(child));
 
 // First Screen => Splash Screen
 const buildSplashScreen = () => {
-  buildDom(`
-    <img src="" alt="" />
-    <br />
-    <button id="start-button">StartGame</button>
-    `);
-  const startButton = document.getElementById("start-button");
-  startButton.addEventListener("click", buildGameScreen);
+  gameBoard.dataset.screen = "splash-screen";
+
+  const startTitle = document.createElement("h1");
+  startTitle.innerText = "Start Screen";
+  gameBoard.appendChild(startTitle);
 };
 
 // Second Screen => Game Screen
 const buildGameScreen = () => {
-  buildDom(`
-    <div id="game-board">
-    <canvas id="canvas" width="700" height="700"></canvas>
-    </div>  
-    <button id="end-button">End Game</button>
-    `);
+  gameBoard.dataset.screen = "game-screen";
+  const canvas = document.createElement("canvas");
+  canvas.width = 700;
+  canvas.height = 700;
+  gameBoard.appendChild(canvas);
 
-  const endButton = document.getElementById("end-button");
-  endButton.addEventListener("click", buildWinScreen);
-
-  const game = new Game();
+  const game = new Game(canvas);
+  window.game = game;
   game.start();
 };
 
 // Third Screen => Game Over
 const buildWinScreen = (winner) => {
-  buildDom(`
-    <section class="game-over">
-    <h1>${winner} wins!</h1>
-    <button id = "restart-game"> TRY AGAIN</button>
-    <div class= "pointer"> </div>
-    </section>
-    `);
+  clearBoard();
+  gameBoard.dataset.screen = "win-screen";
 
-  /* const newGame = document.createElement("script");
-  newGame.src = "scripts/game.js";
-  document.head.appendChild(newGame); */
-
-  const restartButton = document.querySelector("button");
-  restartButton.addEventListener("click", buildSplashScreen);
+  const winnerTitle = document.createElement("h1");
+  winnerTitle.innerText = `${winner} wins!`;
+  gameBoard.appendChild(winnerTitle);
 };
 
-// When the window loads, then we will run the "buildSplashScreen" function
-// "load" waits for the html and JS
-window.addEventListener("load", buildSplashScreen);
-// window.addEventListener("load", buildGameScreen);
+/* on script load*/
+buildSplashScreen();
+
+/* event listeners */
+loadScreenBtn.addEventListener("click", loadScreen);

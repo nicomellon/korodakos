@@ -1,17 +1,13 @@
 class Game {
-  constructor() {
-    this.canvas = null;
-    this.ctx = null;
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext("2d");
     this.playerDies = false;
     this.controls = false;
+    this.winner = "";
   }
 
   start() {
-    // Append canvas to the DOM, create a Player and start the Canvas loop
-    // Save reference to canvas and Create ctx
-    this.canvas = document.querySelector("canvas");
-    this.ctx = canvas.getContext("2d");
-
     // player start positions
     this.startPosOne = this.canvas.width / 4;
     this.startPosTwo = (this.canvas.width * 3) / 4;
@@ -108,6 +104,7 @@ class Game {
 
   enableControls() {
     this.controls = true;
+    console.log("wtf");
   }
 
   disableControls() {
@@ -201,9 +198,15 @@ class Game {
     return Math.hypot(obj2.x - obj1.x, obj2.y - obj1.y);
   }
 
-  checkWin() {
-    if (this.playerOne.lives <= 0) buildWinScreen(this.playerTwo.name);
-    else if (this.playerTwo.lives <= 0) buildWinScreen(this.playerOne.name);
+  checkLives() {
+    if (this.playerOne.lives <= 0) {
+      this.winner = this.playerTwo.name;
+      return true;
+    } else if (this.playerTwo.lives <= 0) {
+      this.winner = this.playerOne.name;
+      return true;
+    }
+    return false;
   }
 
   resetPlayers() {
@@ -224,9 +227,39 @@ class Game {
     this.playerTwo.direction.y = 0;
   }
 
+  showFightMsg() {
+    const fightMsg = document.createElement("h1");
+    fightMsg.classList.add("text-center");
+    fightMsg.innerText = "FIGHT!";
+    gameBoard.appendChild(fightMsg);
+
+    setTimeout(() => fightMsg.remove(), 1 * 1000);
+  }
+
+  countdown() {
+    let secsLeft = 3;
+
+    const countdown = document.createElement("h1");
+    countdown.classList.add("text-center");
+    countdown.innerText = "";
+    gameBoard.appendChild(countdown);
+
+    const intervalID = setInterval(() => {
+      if (secsLeft === 0) {
+        countdown.remove();
+        clearInterval(intervalID);
+        this.showFightMsg();
+        this.enableControls();
+      }
+      countdown.innerText = secsLeft;
+      secsLeft--;
+    }, 1 * 1000);
+  }
+
+  endLoop() {}
+
   startLoop() {
-    // enable controls after 3 seconds
-    setTimeout(() => this.enableControls(), 3 * 1000);
+    this.countdown();
 
     const loop = () => {
       // update state of players
@@ -239,8 +272,6 @@ class Game {
         this.playerOne.radius,
         this.playerTwo.radius
       );
-      // if (this.checkCollission(this.playerOne, this.playerTwo))
-      //   this.collission(this.playerOne, this.playerTwo);
 
       // update the canvas
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -252,17 +283,15 @@ class Game {
       if (this.playerOne.checkFall() || this.playerTwo.checkFall()) {
         this.resetPlayers();
         this.disableControls();
-        setTimeout(() => this.enableControls(), 1 * 1000);
+        setTimeout(() => this.enableControls(), 0.25 * 1000);
       }
 
       // check for win
-      this.checkWin();
-      window.requestAnimationFrame(loop);
+      if (this.checkLives() === true) {
+        buildWinScreen(this.winner);
+      } else window.requestAnimationFrame(loop);
     };
 
-    // As loop function will be continuously invoked by
-    // the `window` object- `window.requestAnimationFrame(loop)`
-    // we need to `start an infinitive loop` till the game is over
     window.requestAnimationFrame(loop);
   }
 }

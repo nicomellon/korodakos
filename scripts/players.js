@@ -46,6 +46,7 @@ class Player {
     //! hard coded distance
     if (this.distanceFromCenter() >= 300) {
       this.lives--;
+
       return true;
     } else return false;
   }
@@ -61,10 +62,8 @@ class Player {
   applyFriction(speed, angle, friction) {
     if (speed > friction) {
       speed -= friction;
-    } /* else { 
-      speed = 0;
-    } */
-    // code above was making collisions boring, completely stopping players
+    }
+
     this.vx = Math.cos(angle) * speed;
     this.vy = Math.sin(angle) * speed;
   }

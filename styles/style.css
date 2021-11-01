@@ -1,8 +1,17 @@
 #game-board {
   width: 700px;
-  margin: auto;
+  height: 700px;
+  margin-inline: auto;
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-#canvas {
-  border: 1px solid black;
+canvas {
+  position: fixed;
+}
+
+.text-center {
+  text-align: center;
 }
