@@ -1,5 +1,5 @@
 class Player {
-  constructor(canvas, x, radius, color, name) {
+  constructor(canvas, x, radius, color, name, mass) {
     this.canvas = canvas;
     this.ctx = this.canvas.getContext("2d");
     this.name = name;
@@ -9,7 +9,7 @@ class Player {
     this.y = canvas.height / 2;
     this.vx = 0;
     this.vy = 0;
-    this.mass = Math.random() * (1.5 - 0.5) + 0.5;
+    this.mass = mass;
     this.acceleration = 0.15 / this.mass;
     this.direction = { x: 0, y: 0 };
     this.speed = 0;

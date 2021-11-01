@@ -1,10 +1,20 @@
 class Game {
-  constructor(canvas) {
+  constructor(
+    canvas,
+    playerOneName,
+    playerOneMass,
+    playerTwoName,
+    playerTwoMass
+  ) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
     this.playerDies = false;
     this.controls = false;
     this.winner = "";
+    this.playerOneName = playerOneName;
+    this.playerOneMass = playerOneMass;
+    this.playerTwoName = playerTwoName;
+    this.playerTwoMass = playerTwoMass;
   }
 
   start() {
@@ -18,14 +28,16 @@ class Game {
       this.startPosOne,
       25,
       "#66D3FA",
-      "p1"
+      this.playerOneName,
+      this.playerOneMass
     );
     this.playerTwo = new Player(
       this.canvas,
       this.startPosTwo,
       25,
       "#FFA500",
-      "p2"
+      this.playerTwoName,
+      this.playerTwoMass
     );
 
     // Add event listener for moving the player
@@ -104,7 +116,6 @@ class Game {
 
   enableControls() {
     this.controls = true;
-    console.log("wtf");
   }
 
   disableControls() {

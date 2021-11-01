@@ -15,3 +15,14 @@ canvas {
 .text-center {
   text-align: center;
 }
+
+.characters {
+  display: flex;
+  flex-basis: 100%;
+  justify-content: space-around;
+}
+
+.player-div {
+  display: flex;
+  flex-direction: column;
+}
