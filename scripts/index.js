@@ -2,6 +2,8 @@
 const gameBoard = document.querySelector("#game-board");
 const loadScreenBtn = document.querySelector("#load-screen");
 
+let requestId = null;
+
 let p1n = "Juan";
 let p1w = 1;
 let p2n = "Pedro";
@@ -34,6 +36,7 @@ const loadScreen = () => {
       break;
     case "characters-screen":
       // loadScreenBtn.removeEventListener("mouseover");
+      window.cancelAnimationFrame(requestId);
       buildGameScreen(p1n, p1w, p2n, p2w);
       break;
     case "game-screen":
@@ -233,12 +236,12 @@ const buildCharactersScreen = () => {
       console.log(currentFrame, sumoTwo.x, sumoTwo.y);
       currentFrame++;
     }
-    window.requestAnimationFrame(animateSumos);
+    requestId = window.requestAnimationFrame(animateSumos);
     frameCount++;
   };
   resetSumoOne();
   resetSumoTwo();
-  window.requestAnimationFrame(animateSumos);
+  requestId = window.requestAnimationFrame(animateSumos);
   frameCount++;
 };
 

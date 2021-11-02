@@ -15,6 +15,7 @@ class Game {
     this.playerOneMass = playerOneMass;
     this.playerTwoName = playerTwoName;
     this.playerTwoMass = playerTwoMass;
+    this.requestId = null;
   }
 
   start() {
@@ -299,10 +300,11 @@ class Game {
 
       // check for win
       if (this.checkLives() === true) {
+        window.cancelAnimationFrame(this.requestId);
         buildWinScreen(this.winner);
-      } else window.requestAnimationFrame(loop);
+      } else this.requestId = window.requestAnimationFrame(loop);
     };
 
-    window.requestAnimationFrame(loop);
+    this.requestId = window.requestAnimationFrame(loop);
   }
 }
