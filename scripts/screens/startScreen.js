@@ -10,6 +10,8 @@ const buildHomeScreen = () => {
   startContainer.appendChild(startTitle);
 
   const startButton = document.createElement("button");
+  startButton.classList.add("start-btn");
+  startButton.classList.add("btn");
   startButton.innerText = "START";
   startContainer.appendChild(startButton);
   startButton.addEventListener("click", switchScreens);

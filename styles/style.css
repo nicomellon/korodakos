@@ -12,7 +12,7 @@
 }
 
 #game-canvas {
-  position: fixed;
+  position: absolute;
 }
 
 .text-center {
@@ -22,16 +22,59 @@
 .character-screen-div {
   display: flex;
   flex-direction: column;
+  height: 100%;
+  align-items: center;
 }
 
 .characters {
   display: flex;
-  flex-basis: 100%;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .player-div {
-  background-color: red;
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+
+.btn {
+  border-radius: 1em;
+  width: 8em;
+  height: 3em;
+}
+
+.start-btn {
+  font-size: 1.5rem;
+}
+
+.play-button {
+  margin: auto;
+  font-size: 1.2rem;
+}
+
+.home-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-right: 50px;
+}
+
+.restart-btn {
+  font-size: 1.4rem;
+  margin-top: 100px;
+}
+
+.winner-div {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.winner {
+  font-size: 4rem;
+}
+
+.hidden {
+  display: none;
 }

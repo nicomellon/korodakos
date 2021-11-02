@@ -303,6 +303,7 @@ class Game {
       // check for win
       if (this.checkLives() === true) {
         window.cancelAnimationFrame(this.requestId);
+        clearBoard();
         buildWinScreen(this.winner);
       } else this.requestId = window.requestAnimationFrame(loop);
     };

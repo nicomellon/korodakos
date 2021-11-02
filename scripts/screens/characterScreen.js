@@ -1,9 +1,17 @@
-let p1n = null;
-let p1w = null;
-let p2n = null;
-let p2w = null;
+const playerInfo = {
+  playerOneName: null,
+  playerOneWeight: null,
+  playerTwoName: null,
+  playerTwoWeight: null,
+};
 
 const buildCharactersScreen = () => {
+  const getPlayerInfo = () => {
+    playerInfo.playerOneName = playerOneName.value;
+    playerInfo.playerOneWeight = playerOneWeight.valueAsNumber;
+    playerInfo.playerTwoName = playerTwoName.value;
+    playerInfo.playerTwoWeight = playerTwoWeight.valueAsNumber;
+  };
   console.log("characterScreen loaded");
 
   /* HTML */
@@ -23,15 +31,14 @@ const buildCharactersScreen = () => {
 
   const playButton = document.createElement("button");
   playButton.innerText = "PLAY";
+  playButton.classList.add("play-button");
+  playButton.classList.add("btn");
   playButton.addEventListener("click", () => {
-    p1n = playerOneName.value;
-    p1w = playerOneWeight.valueAsNumber;
-    p2n = playerTwoName.value;
-    p2w = playerTwoWeight.valueAsNumber;
-    console.log(p1n, p1w, p2n, p2w);
+    getPlayerInfo();
+    window.cancelAnimationFrame(requestId);
     switchScreens();
   });
-  gameBoard.appendChild(playButton);
+  characterScreenDiv.appendChild(playButton);
 
   /* player one div */
   const playerOneDiv = document.createElement("div");
@@ -119,85 +126,39 @@ const buildCharactersScreen = () => {
   playerTwoWeight.step = 0.025;
   playerTwoDiv.appendChild(playerTwoWeight);
 
-  // event listener on button to update names & weights
-  /*  loadScreenBtn.addEventListener("mouseover", () => {
-    
-  }); */
-
   /* animation loop */
   const ctxOne = playerOneCanvas.getContext("2d");
   const ctxTwo = playerTwoCanvas.getContext("2d");
-
-  const drawSumoOne = () => {
-    ctxOne.clearRect(0, 0, 250, 250);
-    sumoOne.x -= sumoSize;
-    ctxOne.drawImage(
-      sumoOne.img,
-      sumoOne.x,
-      sumoOne.y,
-      sumoSize,
-      sumoSize,
-      0,
-      0,
-      250,
-      250
-    );
-  };
-
-  const resetSumoOne = () => {
-    sumoOne.x = sumoSize * 13;
-    sumoOne.y = sumoSize * 2;
-  };
-
-  const drawSumoTwo = () => {
-    ctxTwo.clearRect(0, 0, 250, 250);
-    sumoTwo.x += sumoSize;
-    ctxTwo.drawImage(
-      sumoTwo.img,
-      sumoTwo.x,
-      sumoTwo.y,
-      sumoSize,
-      sumoSize,
-      0,
-      0,
-      250,
-      250
-    );
-  };
-
-  const resetSumoTwo = () => {
-    sumoTwo.x = 0;
-    sumoTwo.y = sumoSize * 3;
-  };
 
   let frameCount = 0;
   let currentFrame = 1;
   const totalFrames = 25;
 
-  const animateSumos = () => {
+  const animateCharacterScreen = () => {
     if (frameCount === 4) {
       frameCount = 0;
 
       if (currentFrame === totalFrames) {
-        resetSumoOne();
-        resetSumoTwo();
+        resetSumo(sumoOne, sumoSize * 12, sumoSize * 2);
+        resetSumo(sumoTwo, 0, sumoSize * 3);
         currentFrame = 1;
       } else if (currentFrame === 13) {
-        sumoOne.x = sumoSize * 13;
-        sumoOne.y = sumoSize * 3;
-        sumoTwo.x = 0;
-        sumoTwo.y = sumoSize * 2;
+        resetSumo(sumoOne, sumoSize * 12, sumoSize * 3);
+        resetSumo(sumoTwo, 0, sumoSize * 2);
       }
-      drawSumoOne();
-      drawSumoTwo();
 
+      drawSumoOne(ctxOne);
+      drawSumoTwo(ctxTwo);
+
+      sumoOne.x -= sumoSize;
+      sumoTwo.x += sumoSize;
       currentFrame++;
     }
-    requestId = window.requestAnimationFrame(animateSumos);
+    requestId = window.requestAnimationFrame(animateCharacterScreen);
     frameCount++;
   };
-  resetSumoOne();
-  resetSumoTwo();
-  requestId = window.requestAnimationFrame(animateSumos);
+  resetSumo(sumoOne, sumoSize * 12, sumoSize * 2);
+  resetSumo(sumoTwo, 0, sumoSize * 3);
+  requestId = window.requestAnimationFrame(animateCharacterScreen);
   frameCount++;
 };
