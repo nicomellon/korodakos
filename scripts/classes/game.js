@@ -1,10 +1,10 @@
 class Game {
   constructor(
     canvas,
-    playerOneName,
-    playerOneMass,
-    playerTwoName,
-    playerTwoMass
+    playerOneName = "player one",
+    playerOneMass = 1,
+    playerTwoName = "player two",
+    playerTwoMass = 1
   ) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
@@ -295,7 +295,9 @@ class Game {
       if (this.playerOne.checkFall() || this.playerTwo.checkFall()) {
         this.resetPlayers();
         this.disableControls();
-        setTimeout(() => this.enableControls(), 0.25 * 1000);
+        setTimeout(() => {
+          this.enableControls();
+        }, 0.25 * 1000);
       }
 
       // check for win
