@@ -1,6 +1,10 @@
 const buildGameScreen = () => {
   gameBoard.dataset.screen = "game-screen";
 
+  const ring = document.createElement("div");
+  ring.classList.add("ring");
+  gameBoard.appendChild(ring);
+
   const canvas = document.createElement("canvas");
   canvas.id = "game-canvas";
   canvas.width = 700;

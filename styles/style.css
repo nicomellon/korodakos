@@ -52,6 +52,18 @@
   font-size: 1.2rem;
 }
 
+/* Game Screen */
+.ring {
+  position: absolute;
+  margin-left: 50px;
+  margin-top: 50px;
+  width: 600px;
+  height: 600px;
+  background-image: url("/assets/icebackground.jpg");
+  background-size: 80px;
+  border-radius: 50%;
+}
+
 .home-btn {
   position: absolute;
   bottom: 0;

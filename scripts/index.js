@@ -7,6 +7,7 @@ const clearBoard = () => {
 // loads different screens
 const switchScreens = () => {
   clearBoard();
+
   const gameState = gameBoard.dataset.screen;
 
   switch (gameState) {
