@@ -8,7 +8,7 @@
   justify-content: center;
 }
 
-canvas {
+#game-canvas {
   position: fixed;
 }
 
@@ -26,3 +26,8 @@ canvas {
   display: flex;
   flex-direction: column;
 }
+
+/* #player-one-canvas,
+#player-two-canvas {
+  background-color: red;
+} */

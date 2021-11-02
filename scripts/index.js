@@ -7,6 +7,23 @@ let p1w = 1;
 let p2n = "Pedro";
 let p2w = 1;
 
+const sumoSize = 42;
+const sumoOne = {
+  img: null,
+  x: 0,
+  y: 0,
+};
+sumoOne.img = new Image();
+sumoOne.img.src = "/assets/sumoOne.png";
+
+const sumoTwo = {
+  img: null,
+  x: 0,
+  y: 0,
+};
+sumoTwo.img = new Image();
+sumoTwo.img.src = "/assets/sumoTwo.png";
+
 const loadScreen = () => {
   clearBoard();
   const gameState = gameBoard.dataset.screen;
@@ -57,6 +74,13 @@ const buildCharactersScreen = () => {
   playerOneTitle.innerText = "Player 1:";
   playerOneDiv.appendChild(playerOneTitle);
 
+  // canvas animation
+  const playerOneCanvas = document.createElement("canvas");
+  playerOneCanvas.width = 250;
+  playerOneCanvas.height = 250;
+  playerOneCanvas.id = "player-one-canvas";
+  playerOneDiv.appendChild(playerOneCanvas);
+
   // name
   const playerOneNameLabel = document.createElement("label");
   playerOneNameLabel.for = "player-one-name";
@@ -93,6 +117,13 @@ const buildCharactersScreen = () => {
   playerTwoTitle.innerText = "Player 2:";
   playerTwoDiv.appendChild(playerTwoTitle);
 
+  // canvas animation
+  const playerTwoCanvas = document.createElement("canvas");
+  playerTwoCanvas.width = 250;
+  playerTwoCanvas.height = 250;
+  playerTwoCanvas.id = "player-two-canvas";
+  playerTwoDiv.appendChild(playerTwoCanvas);
+
   // name
   const playerTwoNameLabel = document.createElement("label");
   playerTwoNameLabel.for = "player-two-name";
@@ -128,12 +159,94 @@ const buildCharactersScreen = () => {
     p2w = playerTwoWeight.valueAsNumber;
     console.log(p1n, p1w, p2n, p2w);
   });
+
+  // animation loop
+  const ctxOne = playerOneCanvas.getContext("2d");
+  // ctxOne.drawImage(sumoOne.img, 495, 0, 45, 45, 0, 0, 250, 250);
+  const ctxTwo = playerTwoCanvas.getContext("2d");
+  // ctxTwo.drawImage(sumoTwo, 0, 0, 45, 45, 0, 0, 250, 250);
+
+  const drawSumoOne = () => {
+    ctxOne.clearRect(0, 0, 250, 250);
+    sumoOne.x -= sumoSize;
+    ctxOne.drawImage(
+      sumoOne.img,
+      sumoOne.x,
+      sumoOne.y,
+      sumoSize,
+      sumoSize,
+      0,
+      0,
+      250,
+      250
+    );
+  };
+
+  const resetSumoOne = () => {
+    sumoOne.x = sumoSize * 13;
+    sumoOne.y = sumoSize * 2;
+  };
+
+  const drawSumoTwo = () => {
+    ctxTwo.clearRect(0, 0, 250, 250);
+    sumoTwo.x += sumoSize;
+    ctxTwo.drawImage(
+      sumoTwo.img,
+      sumoTwo.x,
+      sumoTwo.y,
+      sumoSize,
+      sumoSize,
+      0,
+      0,
+      250,
+      250
+    );
+  };
+
+  const resetSumoTwo = () => {
+    sumoTwo.x = 0;
+    sumoTwo.y = sumoSize * 3;
+    console.log("reset me!");
+  };
+
+  let frameCount = 0;
+  let currentFrame = 1;
+  const totalFrames = 25;
+
+  const animateSumos = () => {
+    if (frameCount === 4) {
+      frameCount = 0;
+
+      if (currentFrame === totalFrames) {
+        resetSumoOne();
+        resetSumoTwo();
+        currentFrame = 1;
+      } else if (currentFrame === 13) {
+        sumoOne.x = sumoSize * 13;
+        sumoOne.y = sumoSize * 3;
+        sumoTwo.x = 0;
+        sumoTwo.y = sumoSize * 2;
+      }
+      drawSumoOne();
+      drawSumoTwo();
+
+      console.log(currentFrame, sumoTwo.x, sumoTwo.y);
+      currentFrame++;
+    }
+    window.requestAnimationFrame(animateSumos);
+    frameCount++;
+  };
+  resetSumoOne();
+  resetSumoTwo();
+  window.requestAnimationFrame(animateSumos);
+  frameCount++;
 };
 
 // Second Screen => Game Screen
 const buildGameScreen = (p1n, p1w, p2n, p2w) => {
   gameBoard.dataset.screen = "game-screen";
   const canvas = document.createElement("canvas");
+  canvas.id = "game-canvas";
   canvas.width = 700;
   canvas.height = 700;
   gameBoard.appendChild(canvas);
