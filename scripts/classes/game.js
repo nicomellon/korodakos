@@ -244,6 +244,13 @@ class Game {
     return false;
   }
 
+  updateScore() {
+    const score = document.querySelector(".score");
+    score.innerText = `${3 - this.playerTwo.lives} - ${
+      3 - this.playerOne.lives
+    }`;
+  }
+
   resetPlayers() {
     // reset player one
     this.playerOne.x = this.startPosOne;
@@ -317,6 +324,7 @@ class Game {
       // check falls
       if (this.playerOne.checkFall() || this.playerTwo.checkFall()) {
         this.resetPlayers();
+        this.updateScore();
         this.disableControls();
         setTimeout(() => {
           this.enableControls();

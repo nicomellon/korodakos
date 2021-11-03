@@ -32,5 +32,3 @@ const gameBoard = document.querySelector("#game-board");
 
 /* on script load*/
 buildHomeScreen();
-// buildWinScreen("Nico");
-// buildGameScreen();

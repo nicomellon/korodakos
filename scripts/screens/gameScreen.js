@@ -11,11 +11,23 @@ const buildGameScreen = () => {
   scoreDiv.classList.add("score-div");
   ringDiv.appendChild(scoreDiv);
 
-  const scoreBoardInfo = document.createElement("h2");
-  scoreBoardInfo.classList.add("score-info");
-  scoreBoardInfo.classList.add("text-center");
-  scoreBoardInfo.innerText = `${playerInfo.playerOneName} 0 - 0 ${playerInfo.playerTwoName}`;
-  scoreDiv.appendChild(scoreBoardInfo);
+  const playerOneTitle = document.createElement("h2");
+  playerOneTitle.classList.add("score-info");
+  playerOneTitle.classList.add("text-center");
+  playerOneTitle.innerText = `${playerInfo.playerOneName}`;
+  scoreDiv.appendChild(playerOneTitle);
+
+  const score = document.createElement("h2");
+  score.classList.add("text-center");
+  score.classList.add("score");
+  score.innerText = "0 - 0";
+  scoreDiv.appendChild(score);
+
+  const playerTwoTitle = document.createElement("h2");
+  playerTwoTitle.classList.add("score-info");
+  playerTwoTitle.classList.add("text-center");
+  playerTwoTitle.innerText = `${playerInfo.playerTwoName}`;
+  scoreDiv.appendChild(playerTwoTitle);
 
   const canvas = document.createElement("canvas");
   canvas.id = "game-canvas";
@@ -28,7 +40,7 @@ const buildGameScreen = () => {
   homeButton.classList.add("btn");
   homeButton.innerText = "Home";
   homeButton.addEventListener("click", switchScreens);
-  ringDiv.appendChild(homeButton);
+  gameBoard.appendChild(homeButton);
 
   const game = new Game(
     canvas,
