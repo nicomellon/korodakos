@@ -5,10 +5,15 @@ const buildWinScreen = (winner) => {
   winnerDiv.classList.add("winner-div");
   gameBoard.appendChild(winnerDiv);
 
+  const winnerDivUp = document.createElement("div");
+  winnerDivUp.classList.add("winner-div-up");
+  winnerDivUp.classList.add("flex");
+  winnerDiv.appendChild(winnerDivUp);
+
   const winnerTitle = document.createElement("h1");
   winnerTitle.classList.add("winner");
   winnerTitle.innerText = `${winner} wins!`;
-  winnerDiv.appendChild(winnerTitle);
+  winnerDivUp.appendChild(winnerTitle);
 
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
@@ -16,18 +21,40 @@ const buildWinScreen = (winner) => {
   canvas.height = 250;
   winnerDiv.appendChild(canvas);
 
+  // div bottom
+  const winnerDivBot = document.createElement("div");
+  winnerDivBot.classList.add("winner-div-bot");
+  winnerDivBot.classList.add("flex");
+  winnerDiv.appendChild(winnerDivBot);
+
+  const rematchBtn = document.createElement("button");
+  rematchBtn.classList.add("btn");
+  rematchBtn.classList.add("rematch-btn");
+  rematchBtn.classList.add("hidden");
+  rematchBtn.innerText = "Rematch";
+  rematchBtn.addEventListener("click", () => {
+    window.cancelAnimationFrame(requestId);
+    gameBoard.dataset.screen = "characters-screen";
+
+    switchScreens();
+  });
+  winnerDivBot.appendChild(rematchBtn);
+
   const restartBtn = document.createElement("button");
   restartBtn.classList.add("btn");
   restartBtn.classList.add("restart-btn");
   restartBtn.classList.add("hidden");
-  restartBtn.innerText = "Play Again";
+  restartBtn.innerText = "Character Select";
   restartBtn.addEventListener("click", () => {
     window.cancelAnimationFrame(requestId);
     switchScreens();
   });
-  winnerDiv.appendChild(restartBtn);
+  winnerDivBot.appendChild(restartBtn);
 
-  setTimeout(() => restartBtn.classList.remove("hidden"), 3 * 1000);
+  setTimeout(() => {
+    rematchBtn.classList.remove("hidden");
+    restartBtn.classList.remove("hidden");
+  }, 3 * 1000);
 
   // canvas animation
   let frameCount = 0;

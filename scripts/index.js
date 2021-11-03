@@ -22,7 +22,7 @@ const switchScreens = () => {
       buildHomeScreen();
       break;
     case "win-screen":
-      buildHomeScreen();
+      buildCharactersScreen();
       break;
   }
 };
@@ -32,3 +32,4 @@ const gameBoard = document.querySelector("#game-board");
 
 /* on script load*/
 buildHomeScreen();
+// buildWinScreen();

@@ -128,8 +128,6 @@ class Game {
     } else {
       sumoOne.y = sumoSize * 6;
     }
-    console.log(sumoOne.x, sumoOne.y);
-    console.log(sumoTwo.x, sumoTwo.y);
     // draw player one draw
     this.ctx.drawImage(
       sumoOne.img,
@@ -223,7 +221,6 @@ class Game {
 
   checkCollision(distance, radiusOne, radiusTwo) {
     if (distance <= radiusOne + radiusTwo) {
-      console.log("collission");
       this.collision(this.playerOne, this.playerTwo, distance);
     }
   }

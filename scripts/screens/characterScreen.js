@@ -12,13 +12,14 @@ const buildCharactersScreen = () => {
     playerInfo.playerTwoName = playerTwoName.value;
     playerInfo.playerTwoWeight = playerTwoWeight.valueAsNumber;
   };
-  console.log("characterScreen loaded");
 
   /* HTML */
   gameBoard.dataset.screen = "characters-screen";
 
   const characterScreenDiv = document.createElement("div");
   characterScreenDiv.classList.add("character-screen-div");
+  characterScreenDiv.classList.add("flex");
+  characterScreenDiv.classList.add("columns");
   gameBoard.appendChild(characterScreenDiv);
 
   const title = document.createElement("h1");

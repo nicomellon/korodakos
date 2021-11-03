@@ -1,14 +1,43 @@
+:root {
+  --color-main: #a41623;
+  --color-accent: #f85e00;
+  --color-subtle: #ffb563;
+  --color-light: #ffd29d;
+  --color-dark: #918450;
+
+  --container-length: 700px;
+}
+
+.spacer {
+  font-size: 3rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.columns {
+  flex-direction: column;
+}
+
 #game-board {
-  width: 700px;
-  height: 700px;
+  background-image: url("/assets/sumoRing.jpg");
+  background-size: cover;
+  width: var(--container-length);
+  height: var(--container-length);
   margin-inline: auto;
-  border: 1px solid black;
 }
 
 .start-container {
-  display: flex;
-  flex-direction: column;
   align-items: center;
+  height: 100%;
+}
+.start-container * {
+  flex-basis: 33%;
+}
+
+.main-title {
+  font-size: 6rem;
 }
 
 #game-canvas {
@@ -20,8 +49,6 @@
 }
 
 .character-screen-div {
-  display: flex;
-  flex-direction: column;
   height: 100%;
   align-items: center;
 }
@@ -44,7 +71,10 @@
 }
 
 .start-btn {
-  font-size: 1.5rem;
+  font-size: 2rem;
+  background-color: var(--color-main);
+  color: white;
+  box-shadow: 0 0 black, 0.2em 0.2em 0.4em var(--color-dark);
 }
 
 .play-button {
@@ -53,29 +83,32 @@
 }
 
 .home-btn {
+  background-color: var(--color-accent);
+  color: white;
   position: relative;
   left: 580px;
   top: 650px;
   margin: 0 20px 10px 0;
 }
 
+.rematch-btn,
 .restart-btn {
   font-size: 1.4rem;
-  margin-top: 100px;
+  background-color: var(--color-main);
+  color: white;
+  box-shadow: 0 0 black, 0.2em 0.2em 0.4em var(--color-dark);
 }
 
 .ring-div {
-  background-image: url("/assets/sumoRing.jpg");
   width: 700px;
   height: 700px;
-  background-size: cover;
   position: absolute;
 }
 
 .score-div {
   display: flex;
   margin: 0 auto;
-  background: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.7);
   height: 50px;
   width: 500px;
   border-bottom-left-radius: 1em;
@@ -101,14 +134,29 @@
 }
 
 .winner-div {
-  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100%;
+}
+
+.winner-div * {
+  flex-basis: 33%;
 }
 
 .winner {
   font-size: 4rem;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.winner-div-up {
+  justify-content: center;
+  align-items: center;
+}
+.winner-div-bot {
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .hidden {
