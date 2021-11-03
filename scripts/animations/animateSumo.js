@@ -1,4 +1,4 @@
-const sumoSize = 41.7;
+const sumoSize = 41.76;
 
 let requestId = null;
 

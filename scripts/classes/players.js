@@ -1,10 +1,9 @@
 class Player {
-  constructor(canvas, x, radius, color, name, mass) {
+  constructor(canvas, x, radius, name, mass) {
     this.canvas = canvas;
     this.ctx = this.canvas.getContext("2d");
     this.name = name;
     this.radius = radius;
-    this.color = color;
     this.x = x;
     this.y = canvas.height / 2;
     this.vx = 0;
@@ -16,30 +15,6 @@ class Player {
     this.angle = { radians: 0, degrees: 0 };
     this.friction = 0.05;
     this.lives = 3;
-  }
-
-  draw() {
-    // draw player circle
-    this.ctx.beginPath();
-    this.ctx.lineWidth = 5;
-    this.ctx.strokeStyle = this.color;
-    this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-    this.ctx.stroke();
-    this.ctx.closePath();
-    // draw player name
-    this.ctx.textAlign = "center";
-    this.ctx.textBaseline = "middle";
-    this.ctx.fillText(this.name, this.x, this.y);
-    // Draw heading vector
-    this.ctx.beginPath();
-    this.ctx.lineWidth = 2;
-    this.ctx.strokeStyle = "black";
-    // this.ctx.arc(this.x, this.y, Math.abs(this.vx * 10));
-    this.ctx.moveTo(this.x, this.y);
-    this.ctx.lineTo(this.x + this.vx * 10, this.y + this.vy * 10);
-    this.ctx.stroke();
-
-    this.ctx.closePath();
   }
 
   checkFall() {

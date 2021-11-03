@@ -1,8 +1,8 @@
 const playerInfo = {
-  playerOneName: null,
-  playerOneWeight: null,
-  playerTwoName: null,
-  playerTwoWeight: null,
+  playerOneName: "player one",
+  playerOneWeight: 1,
+  playerTwoName: "player two",
+  playerTwoWeight: 1,
 };
 
 const buildCharactersScreen = () => {

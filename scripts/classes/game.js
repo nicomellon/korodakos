@@ -21,14 +21,11 @@ class Game {
   }
 
   start() {
-    // player start positions
-
     // create players
     this.playerOne = new Player(
       this.canvas,
       this.startPosOne,
       25,
-      "#66D3FA",
       this.playerOneName,
       this.playerOneMass
     );
@@ -36,7 +33,6 @@ class Game {
       this.canvas,
       this.startPosTwo,
       25,
-      "#FFA500",
       this.playerTwoName,
       this.playerTwoMass
     );
@@ -124,8 +120,49 @@ class Game {
   }
 
   drawPlayers() {
-    this.playerOne.draw();
-    this.playerTwo.draw();
+    // initial values
+    sumoOne.x = sumoSize * 12;
+    // player one state
+    if (this.playerOne.speed < 0.15) {
+      sumoOne.y = 0;
+    } else {
+      sumoOne.y = sumoSize * 6;
+    }
+    console.log(sumoOne.x, sumoOne.y);
+    console.log(sumoTwo.x, sumoTwo.y);
+    // draw player one draw
+    this.ctx.drawImage(
+      sumoOne.img,
+      sumoOne.x,
+      sumoOne.y,
+      sumoSize,
+      sumoSize,
+      this.playerOne.x - 35,
+      this.playerOne.y - 35,
+      70,
+      70
+    );
+    // initial values
+    sumoTwo.x = 0;
+    // player two state
+    if (this.playerTwo.speed < 0.15) {
+      sumoTwo.y = 0;
+    } else {
+      sumoTwo.y = sumoSize * 6;
+    }
+
+    // player two draw
+    this.ctx.drawImage(
+      sumoTwo.img,
+      sumoTwo.x,
+      sumoTwo.y,
+      sumoSize,
+      sumoSize,
+      this.playerTwo.x - 35,
+      this.playerTwo.y - 35,
+      70,
+      70
+    );
   }
 
   drawPlayerInfo() {
