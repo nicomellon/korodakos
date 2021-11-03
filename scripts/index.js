@@ -6,6 +6,7 @@ const clearBoard = () => {
 
 // loads different screens
 const switchScreens = () => {
+  if (requestId) window.cancelAnimationFrame(requestId);
   clearBoard();
 
   const gameState = gameBoard.dataset.screen;
@@ -32,3 +33,4 @@ const gameBoard = document.querySelector("#game-board");
 /* on script load*/
 buildHomeScreen();
 // buildWinScreen("Nico");
+// buildGameScreen();

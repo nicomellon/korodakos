@@ -139,12 +139,12 @@ const buildCharactersScreen = () => {
       frameCount = 0;
 
       if (currentFrame === totalFrames) {
-        resetSumo(sumoOne, sumoSize * 12, sumoSize * 2);
-        resetSumo(sumoTwo, 0, sumoSize * 3);
+        resetSprite(sumoOne, sumoSize * 12, sumoSize * 2);
+        resetSprite(sumoTwo, 0, sumoSize * 3);
         currentFrame = 1;
       } else if (currentFrame === 13) {
-        resetSumo(sumoOne, sumoSize * 12, sumoSize * 3);
-        resetSumo(sumoTwo, 0, sumoSize * 2);
+        resetSprite(sumoOne, sumoSize * 12, sumoSize * 3);
+        resetSprite(sumoTwo, 0, sumoSize * 2);
       }
 
       drawSumoOne(ctxOne);
@@ -157,8 +157,8 @@ const buildCharactersScreen = () => {
     requestId = window.requestAnimationFrame(animateCharacterScreen);
     frameCount++;
   };
-  resetSumo(sumoOne, sumoSize * 12, sumoSize * 2);
-  resetSumo(sumoTwo, 0, sumoSize * 3);
+  resetSprite(sumoOne, sumoSize * 12, sumoSize * 2);
+  resetSprite(sumoTwo, 0, sumoSize * 3);
   requestId = window.requestAnimationFrame(animateCharacterScreen);
   frameCount++;
 };

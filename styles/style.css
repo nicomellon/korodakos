@@ -38,7 +38,7 @@
 }
 
 .btn {
-  border-radius: 1em;
+  border-radius: 0.7em;
   width: 8em;
   height: 3em;
 }
@@ -52,18 +52,6 @@
   font-size: 1.2rem;
 }
 
-/* Game Screen */
-.ring {
-  position: absolute;
-  margin-left: 50px;
-  margin-top: 50px;
-  width: 600px;
-  height: 600px;
-  background-image: url("/assets/icebackground.jpg");
-  background-size: 80px;
-  border-radius: 50%;
-}
-
 .home-btn {
   position: absolute;
   bottom: 0;
@@ -74,6 +62,37 @@
 .restart-btn {
   font-size: 1.4rem;
   margin-top: 100px;
+}
+
+.ring-div {
+  background-image: url("/assets/sumoRing.jpg");
+  width: 700px;
+  height: 700px;
+  background-size: cover;
+  position: absolute;
+}
+
+.score-div {
+  display: flex;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.7);
+  height: 50px;
+  width: 500px;
+  border-bottom-left-radius: 1em;
+  border-bottom-right-radius: 1em;
+  align-items: center;
+  justify-content: center;
+}
+
+.score-info {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.countdown {
+  position: relative;
+  font-size: 5rem;
+  margin-top: 20%;
 }
 
 .winner-div {

@@ -46,9 +46,9 @@ const buildWinScreen = (winner) => {
 
     // reset sprite
     if (currentFrame > totalFrames) {
-      resetSumo(sumoOne, sumoSize * 12, sumoSize * 8);
+      resetSprite(sumoOne, sumoSize * 12, sumoSize * 8);
 
-      resetSumo(sumoTwo, 0, sumoSize * 10);
+      resetSprite(sumoTwo, 0, sumoSize * 10);
 
       currentFrame = 1;
     }
@@ -73,8 +73,8 @@ const buildWinScreen = (winner) => {
 
     // reset sprite
     if (currentFrame > totalFrames) {
-      resetSumo(sumoOne, sumoSize * 12, sumoSize * 10);
-      resetSumo(sumoTwo, 0, sumoSize * 8);
+      resetSprite(sumoOne, sumoSize * 12, sumoSize * 10);
+      resetSprite(sumoTwo, 0, sumoSize * 8);
       currentFrame = 1;
     }
 
@@ -87,12 +87,12 @@ const buildWinScreen = (winner) => {
   };
 
   if (winner === playerInfo.playerOneName) {
-    resetSumo(sumoOne, sumoSize * 12, sumoSize * 8);
-    resetSumo(sumoTwo, 0, sumoSize * 10);
+    resetSprite(sumoOne, sumoSize * 12, sumoSize * 8);
+    resetSprite(sumoTwo, 0, sumoSize * 10);
     requestId = window.requestAnimationFrame(animateWinnerOne);
   } else {
-    resetSumo(sumoOne, sumoSize * 12, sumoSize * 10);
-    resetSumo(sumoTwo, 0, sumoSize * 8);
+    resetSprite(sumoOne, sumoSize * 12, sumoSize * 10);
+    resetSprite(sumoTwo, 0, sumoSize * 8);
     requestId = window.requestAnimationFrame(animateWinnerTwo);
   }
 };

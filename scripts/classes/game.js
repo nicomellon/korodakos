@@ -16,12 +16,12 @@ class Game {
     this.playerTwoName = playerTwoName;
     this.playerTwoMass = playerTwoMass;
     this.requestId = null;
+    this.startPosOne = (this.canvas.width * 3) / 8;
+    this.startPosTwo = (this.canvas.width * 5) / 8;
   }
 
   start() {
     // player start positions
-    this.startPosOne = this.canvas.width / 4;
-    this.startPosTwo = (this.canvas.width * 3) / 4;
 
     // create players
     this.playerOne = new Player(
@@ -123,16 +123,6 @@ class Game {
     this.controls = false;
   }
 
-  drawRing(width) {
-    this.ctx.beginPath();
-    this.ctx.lineWidth = 2;
-    this.ctx.strokeStyle = "black";
-    //! HARD CODED RADIUS
-    this.ctx.arc(width / 2, width / 2, width / 2 - 50, 0, Math.PI * 2, false);
-    this.ctx.stroke();
-    this.ctx.closePath();
-  }
-
   drawPlayers() {
     this.playerOne.draw();
     this.playerTwo.draw();
@@ -187,10 +177,6 @@ class Game {
       vRelativeVelocity.x * vCollisionNorm.x +
       vRelativeVelocity.y * vCollisionNorm.y;
 
-    /* if (speed < 0){
-      break;
-    } */
-
     const impulse = (2 * speed) / (obj1.mass + obj2.mass);
     obj1.vx -= impulse * obj2.mass * vCollisionNorm.x;
     obj1.vy -= impulse * obj2.mass * vCollisionNorm.y;
@@ -242,6 +228,8 @@ class Game {
   showFightMsg() {
     const fightMsg = document.createElement("h1");
     fightMsg.classList.add("text-center");
+    fightMsg.classList.add("countdown");
+
     fightMsg.innerText = "FIGHT!";
     gameBoard.appendChild(fightMsg);
 
@@ -253,6 +241,7 @@ class Game {
 
     const countdown = document.createElement("h1");
     countdown.classList.add("text-center");
+    countdown.classList.add("countdown");
     countdown.innerText = "";
     gameBoard.appendChild(countdown);
 
@@ -267,8 +256,6 @@ class Game {
       secsLeft--;
     }, 1 * 1000);
   }
-
-  endLoop() {}
 
   startLoop() {
     this.countdown();
@@ -287,7 +274,6 @@ class Game {
 
       // update the canvas
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      this.drawRing(this.canvas.width);
       this.drawPlayers();
       this.drawPlayerInfo();
 

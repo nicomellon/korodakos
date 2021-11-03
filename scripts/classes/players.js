@@ -44,9 +44,8 @@ class Player {
 
   checkFall() {
     //! hard coded distance
-    if (this.distanceFromCenter() >= 300) {
+    if (this.distanceFromCenter() >= 265) {
       this.lives--;
-
       return true;
     } else return false;
   }

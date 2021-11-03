@@ -1,5 +1,8 @@
-// sumo one
 const sumoSize = 41.7;
+
+let requestId = null;
+
+// sumo one
 const sumoOne = {
   img: new Image(),
   x: 0,
@@ -15,10 +18,22 @@ const sumoTwo = {
 };
 sumoTwo.img.src = "/assets/sumoTwo.png";
 
-const resetSumo = (sumo, x, y) => {
-  sumo.x = x;
-  sumo.y = y;
+// sumoFight
+const sumoFight = {
+  img: new Image(),
+  x: 0,
+  y: 0,
+  width: 216.4,
+  height: 115.5,
 };
+sumoFight.img.src = "/assets/sumosFighting.png";
+
+const resetSprite = (spriteObj, x, y) => {
+  spriteObj.x = x;
+  spriteObj.y = y;
+};
+
+//! UNNECESSARY FUNCTIONS , swap for ctx.drawImage()
 
 const drawSumoOne = (ctx) => {
   ctx.clearRect(0, 0, 250, 250);
