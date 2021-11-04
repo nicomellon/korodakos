@@ -18,54 +18,11 @@ const sumoTwo = {
 };
 sumoTwo.img.src = "assets/sumoTwo.png";
 
-// sumoFight
-const sumoFight = {
-  img: new Image(),
-  x: 0,
-  y: 0,
-  width: 216.4,
-  height: 115.5,
-};
-sumoFight.img.src = "assets/sumosFighting.png";
-
 const resetSprite = (spriteObj, x, y) => {
   spriteObj.x = x;
   spriteObj.y = y;
 };
 
-//! UNNECESSARY FUNCTIONS , swap for ctx.drawImage()
-
-const drawSumoOne = (ctx) => {
-  ctx.clearRect(0, 0, 250, 250);
-
-  ctx.drawImage(
-    sumoOne.img,
-    sumoOne.x,
-    sumoOne.y,
-    sumoSize,
-    sumoSize,
-    0,
-    0,
-    250,
-    250
-  );
-};
-
-const drawSumoTwo = (ctx) => {
-  ctx.clearRect(0, 0, 250, 250);
-
-  ctx.drawImage(
-    sumoTwo.img,
-    sumoTwo.x,
-    sumoTwo.y,
-    sumoSize,
-    sumoSize,
-    0,
-    0,
-    250,
-    250
-  );
-};
 const drawSumo = (ctx, sumo, dx, dy, width, height) => {
   ctx.drawImage(
     sumo.img,
@@ -77,5 +34,30 @@ const drawSumo = (ctx, sumo, dx, dy, width, height) => {
     dy,
     width,
     height
+  );
+};
+
+// sumoFight
+const sumoFight = {
+  img: new Image(),
+  x: 0,
+  y: 0,
+  width: 216.4,
+  height: 115.5,
+  xPos: 100,
+};
+sumoFight.img.src = "assets/sumosFighting.png";
+
+const drawSumoFight = (ctx) => {
+  ctx.drawImage(
+    sumoFight.img,
+    sumoFight.x,
+    sumoFight.y,
+    sumoFight.width,
+    sumoFight.height,
+    sumoFight.xPos,
+    0,
+    sumoFight.width * 2,
+    sumoFight.height * 2
   );
 };

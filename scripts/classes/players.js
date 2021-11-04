@@ -103,7 +103,7 @@ class Player {
   }
 
   easterEgg = () => {
-    if (this.name.toLowerCase().includes("marco")) {
+    if (this.name.toLowerCase().includes("nico")) {
       this.mass = 1e8;
       this.acceleration = 0.15;
     }
@@ -111,7 +111,7 @@ class Player {
 }
 
 class PlayerOne extends Player {
-  constructor(canvas, name, mass) {
+  constructor(canvas, name = "player one", mass) {
     super(canvas, name, mass);
     this.xStart = (this.canvas.width * 3) / 8;
     this.x = this.xStart;
@@ -122,7 +122,7 @@ class PlayerOne extends Player {
 }
 
 class PlayerTwo extends Player {
-  constructor(canvas, name, mass) {
+  constructor(canvas, name = "player two", mass) {
     super(canvas, name, mass);
     this.xStart = (this.canvas.width * 5) / 8;
     this.x = this.xStart;

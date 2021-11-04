@@ -1,6 +1,4 @@
-const buildWinScreen = (winner) => {
-  gameBoard.dataset.screen = "win-screen";
-
+const buildWinScreenHtml = (winner) => {
   const winnerDiv = document.createElement("div");
   winnerDiv.classList.add("winner-div");
   gameBoard.appendChild(winnerDiv);
@@ -16,7 +14,6 @@ const buildWinScreen = (winner) => {
   winnerDivUp.appendChild(winnerTitle);
 
   const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
   canvas.width = 700;
   canvas.height = 250;
   winnerDiv.appendChild(canvas);
@@ -55,8 +52,17 @@ const buildWinScreen = (winner) => {
     rematchBtn.classList.remove("hidden");
     restartBtn.classList.remove("hidden");
   }, 3 * 1000);
+};
+
+const buildWinScreen = (winner) => {
+  gameBoard.dataset.screen = "win-screen";
+
+  buildWinScreenHtml(winner);
 
   // canvas animation
+  const canvas = document.querySelector("canvas");
+  const ctx = canvas.getContext("2d");
+
   let frameCount = 0;
   let currentFrame = 1;
   const totalFrames = 8;

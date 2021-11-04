@@ -1,20 +1,22 @@
 const playerInfo = {
-  playerOneName: "player one",
+  playerOneName: "",
   playerOneWeight: 1,
-  playerTwoName: "player two",
+  playerTwoName: "",
   playerTwoWeight: 1,
 };
 
-const buildCharactersScreen = () => {
+const buildCharactersScreenHtml = () => {
   const getPlayerInfo = () => {
-    playerInfo.playerOneName = playerOneName.value;
+    playerInfo.playerOneName === ""
+      ? (playerInfo.playerOneName = "player one")
+      : (playerInfo.playerOneName = playerOneName.value);
     playerInfo.playerOneWeight = playerOneWeight.valueAsNumber;
-    playerInfo.playerTwoName = playerTwoName.value;
+
+    playerInfo.playerTwoName === ""
+      ? (playerInfo.playerTwoName = "player two")
+      : (playerInfo.playerTwoName = playerTwoName.value);
     playerInfo.playerTwoWeight = playerTwoWeight.valueAsNumber;
   };
-
-  /* HTML */
-  gameBoard.dataset.screen = "characters-screen";
 
   const characterScreenDiv = document.createElement("div");
   characterScreenDiv.classList.add("character-screen-div");
@@ -126,10 +128,18 @@ const buildCharactersScreen = () => {
   playerTwoWeight.max = 1.5;
   playerTwoWeight.step = 0.025;
   playerTwoDiv.appendChild(playerTwoWeight);
+};
+
+const buildCharactersScreen = () => {
+  gameBoard.dataset.screen = "characters-screen";
+
+  buildCharactersScreenHtml();
 
   /* animation loop */
-  const ctxOne = playerOneCanvas.getContext("2d");
-  const ctxTwo = playerTwoCanvas.getContext("2d");
+  const canvasOne = document.querySelector("#player-one-canvas");
+  const ctxOne = canvasOne.getContext("2d");
+  const canvasTwo = document.querySelector("#player-two-canvas");
+  const ctxTwo = canvasTwo.getContext("2d");
 
   let frameCount = 0;
   let currentFrame = 1;
@@ -148,8 +158,11 @@ const buildCharactersScreen = () => {
         resetSprite(sumoTwo, 0, sumoSize * 2);
       }
 
-      drawSumoOne(ctxOne);
-      drawSumoTwo(ctxTwo);
+      ctxOne.clearRect(0, 0, 250, 250);
+      ctxTwo.clearRect(0, 0, 250, 250);
+
+      drawSumo(ctxOne, sumoOne, 0, 0, 250, 250);
+      drawSumo(ctxTwo, sumoTwo, 0, 0, 250, 250);
 
       sumoOne.x -= sumoSize;
       sumoTwo.x += sumoSize;

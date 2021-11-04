@@ -1,6 +1,4 @@
-const buildHomeScreen = () => {
-  gameBoard.dataset.screen = "splash-screen";
-
+const buildHomeScreenHtml = () => {
   const startContainer = document.createElement("div");
   startContainer.classList.add("start-container");
   startContainer.classList.add("flex");
@@ -32,13 +30,19 @@ const buildHomeScreen = () => {
   startButton.innerText = "START";
   startButton.addEventListener("click", switchScreens);
   startDivBot.appendChild(startButton);
+};
 
-  const startLoop = (canvas) => {
+const buildHomeScreen = () => {
+  gameBoard.dataset.screen = "splash-screen";
+
+  buildHomeScreenHtml();
+
+  const startLoop = () => {
+    const canvas = document.querySelector("canvas");
     const ctx = canvas.getContext("2d");
     let currentFrame = 1;
     const totalFrames = 10;
     let loopCount = 1;
-    let xPos = 100;
     let acc = 1.05;
 
     const loop = () => {
@@ -55,23 +59,12 @@ const buildHomeScreen = () => {
           resetSprite(sumoFight, 0, sumoFight.height);
         }
 
-        ctx.drawImage(
-          sumoFight.img,
-          sumoFight.x,
-          sumoFight.y,
-          sumoFight.width,
-          sumoFight.height,
-          xPos,
-          0,
-          sumoFight.width * 2,
-          sumoFight.height * 2
-        );
-
+        drawSumoFight(ctx);
         sumoFight.x += sumoFight.width;
       }
 
       //sprite pos
-      xPos += acc;
+      sumoFight.xPos += acc;
       loopCount++;
       requestId = window.requestAnimationFrame(loop);
     };
@@ -79,5 +72,5 @@ const buildHomeScreen = () => {
     requestId = window.requestAnimationFrame(loop);
   };
 
-  startLoop(canvas);
+  startLoop();
 };
