@@ -25,7 +25,8 @@ const buildCharactersScreenHtml = () => {
   gameBoard.appendChild(characterScreenDiv);
 
   const title = document.createElement("h1");
-  title.innerText = "Get ready";
+  title.classList.add("character-title");
+  title.innerText = "Get ready...";
   characterScreenDiv.appendChild(title);
 
   const infoDiv = document.createElement("div");
@@ -49,7 +50,7 @@ const buildCharactersScreenHtml = () => {
   infoDiv.appendChild(playerOneDiv);
 
   const playerOneTitle = document.createElement("h2");
-  playerOneTitle.innerText = "Player 1:";
+  playerOneTitle.innerText = "Player 1";
   playerOneDiv.appendChild(playerOneTitle);
 
   // player one canvas
@@ -66,6 +67,8 @@ const buildCharactersScreenHtml = () => {
   playerOneDiv.appendChild(playerOneNameLabel);
 
   const playerOneName = document.createElement("input");
+  playerOneName.classList.add("character-input");
+  playerOneName.classList.add("text-center");
   playerOneName.type = "text";
   playerOneName.id = "player-one-name";
   playerOneName.placeholder = "player one";
@@ -80,6 +83,7 @@ const buildCharactersScreenHtml = () => {
   const playerOneWeight = document.createElement("input");
   playerOneWeight.type = "range";
   playerOneWeight.id = "player-one-weight";
+  playerOneWeight.classList.add("slider");
   playerOneWeight.name = "weight";
   playerOneWeight.min = 0.5;
   playerOneWeight.max = 1.5;
@@ -92,7 +96,7 @@ const buildCharactersScreenHtml = () => {
   infoDiv.appendChild(playerTwoDiv);
 
   const playerTwoTitle = document.createElement("h2");
-  playerTwoTitle.innerText = "Player 2:";
+  playerTwoTitle.innerText = "Player 2";
   playerTwoDiv.appendChild(playerTwoTitle);
 
   // player two player one canvas
@@ -110,6 +114,8 @@ const buildCharactersScreenHtml = () => {
 
   const playerTwoName = document.createElement("input");
   playerTwoName.type = "text";
+  playerTwoName.classList.add("character-input");
+  playerTwoName.classList.add("text-center");
   playerTwoName.id = "player-two-name";
   playerTwoName.placeholder = "player two";
   playerTwoDiv.appendChild(playerTwoName);
@@ -122,6 +128,7 @@ const buildCharactersScreenHtml = () => {
 
   const playerTwoWeight = document.createElement("input");
   playerTwoWeight.type = "range";
+  playerTwoWeight.classList.add("slider");
   playerTwoWeight.id = "player-two-weight";
   playerTwoWeight.name = "weight";
   playerTwoWeight.min = 0.5;

@@ -8,6 +8,10 @@
   --container-length: 700px;
 }
 
+body {
+  font-family: "Ceviche One";
+}
+
 .spacer {
   font-size: 3rem;
 }
@@ -38,6 +42,7 @@
 
 .main-title {
   font-size: 6rem;
+  color: var(--color-main);
 }
 
 #game-canvas {
@@ -46,6 +51,10 @@
 
 .text-center {
   text-align: center;
+}
+
+.character-title {
+  font-size: 4rem;
 }
 
 .character-screen-div {
@@ -58,6 +67,32 @@
   justify-content: space-between;
 }
 
+.character-input {
+  border-radius: 0.6em;
+  margin-bottom: 1.5em;
+  margin-top: 0.5em;
+}
+
+.slider {
+  margin-top: 0.5em;
+  background-color: var(--color-main);
+  border: none;
+  border-radius: 8px;
+  height: 7px;
+  -webkit-appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  box-shadow: 1px 1px 1px #000000;
+  border: 1px solid #000000;
+  height: 20px;
+  width: 12px;
+  border-radius: 5px;
+  background: #ffffff;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
 .player-div {
   display: flex;
   flex-direction: column;
@@ -65,6 +100,7 @@
 }
 
 .btn {
+  font-family: "Ceviche One";
   border-radius: 0.7em;
   width: 8em;
   height: 3em;
@@ -80,11 +116,11 @@
 .play-button {
   margin: auto;
   font-size: 1.2rem;
+  background-color: var(--color-subtle);
 }
 
 .home-btn {
-  background-color: var(--color-accent);
-  color: white;
+  background-color: var(--color-subtle);
   position: relative;
   left: 580px;
   top: 650px;

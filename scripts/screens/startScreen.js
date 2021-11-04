@@ -11,7 +11,7 @@ const buildHomeScreenHtml = () => {
 
   const startTitle = document.createElement("h1");
   startTitle.classList.add("main-title");
-  startTitle.innerText = "SUMO";
+  startTitle.innerText = "KORODAKOS";
   startDivUp.appendChild(startTitle);
 
   //middle canvas
