@@ -1,10 +1,9 @@
 class Player {
-  constructor(canvas, x, radius, name, mass) {
+  constructor(canvas, name, mass) {
     this.canvas = canvas;
     this.ctx = this.canvas.getContext("2d");
     this.name = name;
-    this.radius = radius;
-    this.x = x;
+    this.radius = 25;
     this.y = canvas.height / 2;
     this.vx = 0;
     this.vy = 0;
@@ -12,9 +11,60 @@ class Player {
     this.acceleration = 0.15 / this.mass;
     this.direction = { x: 0, y: 0 };
     this.speed = 0;
-    this.angle = { radians: 0, degrees: 0 };
+    this.angle = 0;
     this.friction = 0.05;
     this.lives = 3;
+    this.canMove = false;
+    this.sprite = {
+      img: new Image(),
+      x: 0,
+      y: 0,
+      size: 41.76,
+    };
+  }
+
+  // controls
+  handleKeyDown = (event) => {
+    if (this.canMove === true) {
+      switch (event.code) {
+        case this.controls.up:
+          this.direction.y = -1;
+          break;
+        case this.controls.right:
+          this.direction.x = 1;
+          break;
+        case this.controls.down:
+          this.direction.y = 1;
+          break;
+        case this.controls.left:
+          this.direction.x = -1;
+          break;
+      }
+    }
+  };
+
+  handleKeyUp = (event) => {
+    if (this.canMove === true) {
+      switch (event.code) {
+        case this.controls.up:
+        case this.controls.down:
+          this.direction.y = 0;
+          break;
+        case this.controls.right:
+        case this.controls.left:
+          this.direction.x = 0;
+          break;
+      }
+    }
+  };
+
+  resetPos() {
+    this.x = this.xStart;
+    this.y = this.canvas.height / 2;
+    this.vx = 0;
+    this.vy = 0;
+    this.direction.x = 0;
+    this.direction.y = 0;
   }
 
   checkFall() {
@@ -33,31 +83,52 @@ class Player {
     );
   }
 
-  applyFriction(speed, angle, friction) {
-    if (speed > friction) {
-      speed -= friction;
-    }
-
-    this.vx = Math.cos(angle) * speed;
-    this.vy = Math.sin(angle) * speed;
-  }
-
-  update() {
+  updatePos() {
     //update velocity
     this.vx += this.acceleration * this.direction.x;
     this.vy += this.acceleration * this.direction.y;
-
     this.speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
 
     // Calculate the angle for adding images later
-    this.angle.radians = Math.atan2(this.vy, this.vx);
-    this.angle.degrees = (180 * this.angle.radians) / Math.PI;
+    this.angle = Math.atan2(this.vy, this.vx);
 
     // apply friction
-    this.applyFriction(this.speed, this.angle.radians, this.friction);
+    if (this.speed > this.friction) {
+      this.speed -= this.friction;
+    }
+    this.vx = Math.cos(this.angle) * this.speed;
+    this.vy = Math.sin(this.angle) * this.speed;
 
     //update position
     this.x += this.vx;
     this.y += this.vy;
+  }
+}
+
+/* player one */
+class PlayerOne extends Player {
+  constructor(canvas, name, mass) {
+    super(canvas, name, mass);
+    this.xStart = (this.canvas.width * 3) / 8;
+    this.x = this.xStart;
+    this.controls = { up: "KeyW", right: "KeyD", down: "KeyS", left: "KeyA" };
+    this.sprite.img.src = "assets/sumoOne.png";
+    this.sprite.x = this.sprite.size * 12;
+  }
+}
+
+/* player two */
+class PlayerTwo extends Player {
+  constructor(canvas, name, mass) {
+    super(canvas, name, mass);
+    this.xStart = (this.canvas.width * 5) / 8;
+    this.x = this.xStart;
+    this.controls = {
+      up: "ArrowUp",
+      right: "ArrowRight",
+      down: "ArrowDown",
+      left: "ArrowLeft",
+    };
+    this.sprite.img.src = "assets/sumoTwo.png";
   }
 }

@@ -9,194 +9,74 @@ class Game {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
     this.playerDies = false;
-    this.controls = false;
     this.winner = "";
     this.playerOneName = playerOneName;
     this.playerOneMass = playerOneMass;
     this.playerTwoName = playerTwoName;
     this.playerTwoMass = playerTwoMass;
     this.requestId = null;
-    this.startPosOne = (this.canvas.width * 3) / 8;
-    this.startPosTwo = (this.canvas.width * 5) / 8;
   }
 
+  // create player objects
   start() {
-    // create players
-    this.playerOne = new Player(
+    this.playerOne = new PlayerOne(
       this.canvas,
-      this.startPosOne,
-      25,
       this.playerOneName,
       this.playerOneMass
     );
-    this.playerTwo = new Player(
+    this.playerTwo = new PlayerTwo(
       this.canvas,
-      this.startPosTwo,
-      25,
       this.playerTwoName,
       this.playerTwoMass
     );
 
-    // Add event listener for moving the player
-    const handleKeyDown = (event) => {
-      if (this.controls === true) {
-        switch (event.code) {
-          // player one controls
-          case "KeyD":
-            this.playerOne.direction.x = 1;
-            break;
-          case "KeyA":
-            this.playerOne.direction.x = -1;
-            break;
-          case "KeyW":
-            this.playerOne.direction.y = -1;
-            break;
-          case "KeyS":
-            this.playerOne.direction.y = 1;
-            break;
-          // player two controls
-          case "ArrowRight":
-            this.playerTwo.direction.x = 1;
-            break;
-          case "ArrowLeft":
-            this.playerTwo.direction.x = -1;
-            break;
-          case "ArrowUp":
-            this.playerTwo.direction.y = -1;
-            break;
-          case "ArrowDown":
-            this.playerTwo.direction.y = 1;
-            break;
-        }
-      }
-    };
-
-    const handleKeyUp = (event) => {
-      if (this.controls === true) {
-        switch (event.code) {
-          // player one controls
-          case "KeyD":
-            this.playerOne.direction.x = 0;
-            break;
-          case "KeyA":
-            this.playerOne.direction.x = 0;
-            break;
-          case "KeyW":
-            this.playerOne.direction.y = 0;
-            break;
-          case "KeyS":
-            this.playerOne.direction.y = 0;
-            break;
-          // player two controls
-          case "ArrowRight":
-            this.playerTwo.direction.x = 0;
-            break;
-          case "ArrowLeft":
-            this.playerTwo.direction.x = 0;
-            break;
-          case "ArrowUp":
-            this.playerTwo.direction.y = 0;
-            break;
-          case "ArrowDown":
-            this.playerTwo.direction.y = 0;
-            break;
-        }
-      }
-    };
     // Any function provided to eventListener
-    document.body.addEventListener("keydown", handleKeyDown);
-    document.body.addEventListener("keyup", handleKeyUp);
+    document.body.addEventListener("keydown", this.playerOne.handleKeyDown);
+    document.body.addEventListener("keyup", this.playerOne.handleKeyUp);
+    document.body.addEventListener("keydown", this.playerTwo.handleKeyDown);
+    document.body.addEventListener("keyup", this.playerTwo.handleKeyUp);
 
     // Start the canvas requestAnimationFrame loop
     this.startLoop();
   }
 
-  enableControls() {
-    this.controls = true;
+  enableMovement() {
+    this.playerOne.canMove = true;
+    this.playerTwo.canMove = true;
   }
 
-  disableControls() {
-    this.controls = false;
+  disableMovement() {
+    this.playerOne.canMove = false;
+    this.playerTwo.canMove = false;
   }
 
-  drawPlayers() {
-    // initial values
-    sumoOne.x = sumoSize * 12;
+  switchSprites(playerOne, playerTwo) {
     // player one state
-    if (this.playerOne.speed < 0.15) {
-      sumoOne.y = 0;
+    if (playerOne.speed < 0.15) {
+      playerOne.sprite.y = 0;
     } else {
-      sumoOne.y = sumoSize * 6;
+      playerOne.sprite.y = playerOne.sprite.size * 6;
     }
-    // draw player one draw
-    this.ctx.drawImage(
-      sumoOne.img,
-      sumoOne.x,
-      sumoOne.y,
-      sumoSize,
-      sumoSize,
-      this.playerOne.x - 35,
-      this.playerOne.y - 35,
-      70,
-      70
-    );
-    // initial values
-    sumoTwo.x = 0;
     // player two state
-    if (this.playerTwo.speed < 0.15) {
-      sumoTwo.y = 0;
+    if (playerTwo.speed < 0.15) {
+      playerTwo.sprite.y = 0;
     } else {
-      sumoTwo.y = sumoSize * 6;
+      playerTwo.sprite.y = playerTwo.sprite.size * 6;
     }
-
-    // player two draw
-    this.ctx.drawImage(
-      sumoTwo.img,
-      sumoTwo.x,
-      sumoTwo.y,
-      sumoSize,
-      sumoSize,
-      this.playerTwo.x - 35,
-      this.playerTwo.y - 35,
-      70,
-      70
-    );
   }
 
-  drawPlayerInfo() {
-    // player one
-    this.ctx.textAlign = "left";
-    this.ctx.fillText(`${this.playerOne.name}`, 10, 10);
-    this.ctx.fillText(`speed: ${this.playerOne.speed.toFixed(2)}`, 10, 20);
-    this.ctx.fillText(
-      `distance: ${this.playerOne.distanceFromCenter().toFixed(0)}`,
-      10,
-      30
+  drawPlayers(player) {
+    this.ctx.drawImage(
+      player.sprite.img,
+      player.sprite.x,
+      player.sprite.y,
+      player.sprite.size,
+      player.sprite.size,
+      player.x - 35,
+      player.y - 35,
+      70,
+      70
     );
-    this.ctx.fillText(`mass: ${this.playerOne.mass.toFixed(2)}`, 10, 40);
-    this.ctx.fillText(
-      `acceleration: ${this.playerOne.acceleration.toFixed(2)}`,
-      10,
-      50
-    );
-    this.ctx.fillText(`controls: ${this.controls}`, 10, 80);
-    this.ctx.fillText(`lives: ${this.playerOne.lives}`, 10, 690);
-    // player two
-    this.ctx.textAlign = "right";
-    this.ctx.fillText(`${this.playerTwo.name}`, 690, 10);
-    this.ctx.fillText(`speed: ${this.playerTwo.speed.toFixed(2)}`, 690, 20);
-    this.ctx.fillText(
-      `distance: ${this.playerTwo.distanceFromCenter().toFixed(0)}`,
-      690,
-      30
-    );
-    this.ctx.fillText(`mass: ${this.playerTwo.mass.toFixed(2)}`, 690, 40);
-    this.ctx.fillText(
-      `acceleration: ${this.playerTwo.acceleration.toFixed(2)}`,
-      690,
-      50
-    );
-    this.ctx.fillText(`lives: ${this.playerTwo.lives}`, 690, 690);
   }
 
   collision(obj1, obj2, distance) {
@@ -249,21 +129,8 @@ class Game {
   }
 
   resetPlayers() {
-    // reset player one
-    this.playerOne.x = this.startPosOne;
-    this.playerOne.y = this.canvas.height / 2;
-    this.playerOne.vx = 0;
-    this.playerOne.vy = 0;
-    this.playerOne.direction.x = 0;
-    this.playerOne.direction.y = 0;
-
-    // reset player two
-    this.playerTwo.x = this.startPosTwo;
-    this.playerTwo.y = this.canvas.height / 2;
-    this.playerTwo.vx = 0;
-    this.playerTwo.vy = 0;
-    this.playerTwo.direction.x = 0;
-    this.playerTwo.direction.y = 0;
+    this.playerOne.resetPos();
+    this.playerTwo.resetPos();
   }
 
   showFightMsg() {
@@ -291,7 +158,7 @@ class Game {
         countdown.remove();
         clearInterval(intervalID);
         this.showFightMsg();
-        this.enableControls();
+        this.enableMovement();
       }
       countdown.innerText = secsLeft;
       secsLeft--;
@@ -303,8 +170,8 @@ class Game {
 
     const loop = () => {
       // update state of players
-      this.playerOne.update();
-      this.playerTwo.update();
+      this.playerOne.updatePos();
+      this.playerTwo.updatePos();
 
       // check for collission
       this.checkCollision(
@@ -315,16 +182,17 @@ class Game {
 
       // update the canvas
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      this.drawPlayers();
-      this.drawPlayerInfo();
+      this.switchSprites(this.playerOne, this.playerTwo);
+      this.drawPlayers(this.playerOne);
+      this.drawPlayers(this.playerTwo);
 
       // check falls
       if (this.playerOne.checkFall() || this.playerTwo.checkFall()) {
         this.resetPlayers();
         this.updateScore();
-        this.disableControls();
+        this.disableMovement();
         setTimeout(() => {
-          this.enableControls();
+          this.enableMovement();
         }, 0.25 * 1000);
       }
 
