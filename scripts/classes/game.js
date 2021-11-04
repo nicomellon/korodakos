@@ -28,7 +28,6 @@ class Game {
 
   switchSprites(playerOne, playerTwo) {
     // player one state
-    console.log("marco is here");
     if (playerOne.speed < 0.15) {
       playerOne.sprite.y = 0;
     } else {
