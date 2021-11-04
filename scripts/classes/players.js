@@ -58,31 +58,6 @@ class Player {
     }
   };
 
-  resetPos() {
-    this.x = this.xStart;
-    this.y = this.canvas.height / 2;
-    this.vx = 0;
-    this.vy = 0;
-    this.direction.x = 0;
-    this.direction.y = 0;
-  }
-
-  checkFall() {
-    //! hard coded distance
-    if (this.distanceFromCenter() >= 265) {
-      this.lives--;
-      return true;
-    } else return false;
-  }
-
-  // TODO refactor and make general calcDistance function
-  distanceFromCenter() {
-    return Math.hypot(
-      this.canvas.width / 2 - this.x,
-      this.canvas.width / 2 - this.y
-    );
-  }
-
   updatePos() {
     //update velocity
     this.vx += this.acceleration * this.direction.x;
@@ -103,9 +78,38 @@ class Player {
     this.x += this.vx;
     this.y += this.vy;
   }
+
+  resetPos() {
+    this.x = this.xStart;
+    this.y = this.canvas.height / 2;
+    this.vx = 0;
+    this.vy = 0;
+    this.direction.x = 0;
+    this.direction.y = 0;
+  }
+
+  distanceFromCenter() {
+    return Math.hypot(
+      this.canvas.width / 2 - this.x,
+      this.canvas.width / 2 - this.y
+    );
+  }
+
+  checkFall() {
+    if (this.distanceFromCenter() >= 265) {
+      this.lives--;
+      return true;
+    } else return false;
+  }
+
+  easterEgg = () => {
+    if (this.name.toLowerCase().includes("marco")) {
+      this.mass = 1e8;
+      this.acceleration = 0.15;
+    }
+  };
 }
 
-/* player one */
 class PlayerOne extends Player {
   constructor(canvas, name, mass) {
     super(canvas, name, mass);
@@ -117,7 +121,6 @@ class PlayerOne extends Player {
   }
 }
 
-/* player two */
 class PlayerTwo extends Player {
   constructor(canvas, name, mass) {
     super(canvas, name, mass);

@@ -10,6 +10,7 @@ class Game {
     this.ctx = canvas.getContext("2d");
     this.playerDies = false;
     this.winner = "";
+    this.players = [];
     this.playerOneName = playerOneName;
     this.playerOneMass = playerOneMass;
     this.playerTwoName = playerTwoName;
@@ -17,37 +18,12 @@ class Game {
     this.requestId = null;
   }
 
-  // create player objects
-  start() {
-    this.playerOne = new PlayerOne(
-      this.canvas,
-      this.playerOneName,
-      this.playerOneMass
-    );
-    this.playerTwo = new PlayerTwo(
-      this.canvas,
-      this.playerTwoName,
-      this.playerTwoMass
-    );
-
-    // Any function provided to eventListener
-    document.body.addEventListener("keydown", this.playerOne.handleKeyDown);
-    document.body.addEventListener("keyup", this.playerOne.handleKeyUp);
-    document.body.addEventListener("keydown", this.playerTwo.handleKeyDown);
-    document.body.addEventListener("keyup", this.playerTwo.handleKeyUp);
-
-    // Start the canvas requestAnimationFrame loop
-    this.startLoop();
-  }
-
   enableMovement() {
-    this.playerOne.canMove = true;
-    this.playerTwo.canMove = true;
+    this.players.forEach((player) => (player.canMove = true));
   }
 
-  disableMovement() {
-    this.playerOne.canMove = false;
-    this.playerTwo.canMove = false;
+  disableMovement(player) {
+    this.players.forEach((player) => (player.canMove = false));
   }
 
   switchSprites(playerOne, playerTwo) {
@@ -65,38 +41,24 @@ class Game {
     }
   }
 
-  drawPlayers(player) {
-    this.ctx.drawImage(
-      player.sprite.img,
-      player.sprite.x,
-      player.sprite.y,
-      player.sprite.size,
-      player.sprite.size,
-      player.x - 35,
-      player.y - 35,
-      70,
-      70
-    );
+  drawPlayers() {
+    this.players.forEach((player) => {
+      this.ctx.drawImage(
+        player.sprite.img,
+        player.sprite.x,
+        player.sprite.y,
+        player.sprite.size,
+        player.sprite.size,
+        player.x - 35,
+        player.y - 35,
+        70,
+        70
+      );
+    });
   }
 
-  collision(obj1, obj2, distance) {
-    const vCollision = { x: obj2.x - obj1.x, y: obj2.y - obj1.y };
-
-    const vCollisionNorm = {
-      x: vCollision.x / distance,
-      y: vCollision.y / distance,
-    };
-
-    const vRelativeVelocity = { x: obj1.vx - obj2.vx, y: obj1.vy - obj2.vy };
-    const speed =
-      vRelativeVelocity.x * vCollisionNorm.x +
-      vRelativeVelocity.y * vCollisionNorm.y;
-
-    const impulse = (2 * speed) / (obj1.mass + obj2.mass);
-    obj1.vx -= impulse * obj2.mass * vCollisionNorm.x;
-    obj1.vy -= impulse * obj2.mass * vCollisionNorm.y;
-    obj2.vx += impulse * obj1.mass * vCollisionNorm.x;
-    obj2.vy += impulse * obj1.mass * vCollisionNorm.y;
+  getPlayerDistance(playerOne, playerTwo) {
+    return Math.hypot(playerTwo.x - playerOne.x, playerTwo.y - playerOne.y);
   }
 
   checkCollision(distance, radiusOne, radiusTwo) {
@@ -105,9 +67,30 @@ class Game {
     }
   }
 
-  // TODO refactor and make general calcDistance function
-  getPlayerDistance(obj1, obj2) {
-    return Math.hypot(obj2.x - obj1.x, obj2.y - obj1.y);
+  collision(playerOne, playerTwo, distance) {
+    const vCollision = {
+      x: playerTwo.x - playerOne.x,
+      y: playerTwo.y - playerOne.y,
+    };
+
+    const vCollisionNorm = {
+      x: vCollision.x / distance,
+      y: vCollision.y / distance,
+    };
+
+    const vRelativeVelocity = {
+      x: playerOne.vx - playerTwo.vx,
+      y: playerOne.vy - playerTwo.vy,
+    };
+    const speed =
+      vRelativeVelocity.x * vCollisionNorm.x +
+      vRelativeVelocity.y * vCollisionNorm.y;
+
+    const impulse = (2 * speed) / (playerOne.mass + playerTwo.mass);
+    playerOne.vx -= impulse * playerTwo.mass * vCollisionNorm.x;
+    playerOne.vy -= impulse * playerTwo.mass * vCollisionNorm.y;
+    playerTwo.vx += impulse * playerOne.mass * vCollisionNorm.x;
+    playerTwo.vy += impulse * playerOne.mass * vCollisionNorm.y;
   }
 
   checkLives() {
@@ -129,19 +112,7 @@ class Game {
   }
 
   resetPlayers() {
-    this.playerOne.resetPos();
-    this.playerTwo.resetPos();
-  }
-
-  showFightMsg() {
-    const fightMsg = document.createElement("h1");
-    fightMsg.classList.add("text-center");
-    fightMsg.classList.add("countdown");
-
-    fightMsg.innerText = "FIGHT!";
-    gameBoard.appendChild(fightMsg);
-
-    setTimeout(() => fightMsg.remove(), 1 * 1000);
+    this.players.forEach((player) => player.resetPos());
   }
 
   countdown() {
@@ -165,13 +136,47 @@ class Game {
     }, 1 * 1000);
   }
 
+  showFightMsg() {
+    const fightMsg = document.createElement("h1");
+    fightMsg.classList.add("text-center");
+    fightMsg.classList.add("countdown");
+    fightMsg.innerText = "FIGHT!";
+    gameBoard.appendChild(fightMsg);
+    setTimeout(() => fightMsg.remove(), 1 * 1000);
+  }
+
+  start() {
+    this.playerOne = new PlayerOne(
+      this.canvas,
+      this.playerOneName,
+      this.playerOneMass
+    );
+    this.playerTwo = new PlayerTwo(
+      this.canvas,
+      this.playerTwoName,
+      this.playerTwoMass
+    );
+
+    this.players.push(this.playerOne, this.playerTwo);
+
+    this.playerOne.easterEgg();
+    this.playerTwo.easterEgg();
+
+    // add eventListeners to control players
+    document.body.addEventListener("keydown", this.playerOne.handleKeyDown);
+    document.body.addEventListener("keyup", this.playerOne.handleKeyUp);
+    document.body.addEventListener("keydown", this.playerTwo.handleKeyDown);
+    document.body.addEventListener("keyup", this.playerTwo.handleKeyUp);
+
+    // Start the canvas requestAnimationFrame loop
+    this.startLoop();
+  }
   startLoop() {
     this.countdown();
 
     const loop = () => {
       // update state of players
-      this.playerOne.updatePos();
-      this.playerTwo.updatePos();
+      this.players.forEach((player) => player.updatePos());
 
       // check for collission
       this.checkCollision(
@@ -183,8 +188,7 @@ class Game {
       // update the canvas
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       this.switchSprites(this.playerOne, this.playerTwo);
-      this.drawPlayers(this.playerOne);
-      this.drawPlayers(this.playerTwo);
+      this.drawPlayers();
 
       // check falls
       if (this.playerOne.checkFall() || this.playerTwo.checkFall()) {
