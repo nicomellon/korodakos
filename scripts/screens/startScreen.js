@@ -44,6 +44,7 @@ const buildHomeScreen = () => {
     const totalFrames = 10;
     let loopCount = 1;
     let acc = 1.05;
+    sumoFight.xPos = 100;
 
     const loop = () => {
       if (loopCount === 10) {

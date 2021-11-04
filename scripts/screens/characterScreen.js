@@ -7,12 +7,12 @@ const playerInfo = {
 
 const buildCharactersScreenHtml = () => {
   const getPlayerInfo = () => {
-    playerInfo.playerOneName === ""
+    playerOneName.value === ""
       ? (playerInfo.playerOneName = "player one")
       : (playerInfo.playerOneName = playerOneName.value);
     playerInfo.playerOneWeight = playerOneWeight.valueAsNumber;
 
-    playerInfo.playerTwoName === ""
+    playerTwoName.value === ""
       ? (playerInfo.playerTwoName = "player two")
       : (playerInfo.playerTwoName = playerTwoName.value);
     playerInfo.playerTwoWeight = playerTwoWeight.valueAsNumber;
