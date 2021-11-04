@@ -8,7 +8,7 @@ const sumoOne = {
   x: 0,
   y: 0,
 };
-sumoOne.img.src = "/assets/sumoOne.png";
+sumoOne.img.src = "assets/sumoOne.png";
 
 // sumo two
 const sumoTwo = {
@@ -16,7 +16,7 @@ const sumoTwo = {
   x: 0,
   y: 0,
 };
-sumoTwo.img.src = "/assets/sumoTwo.png";
+sumoTwo.img.src = "assets/sumoTwo.png";
 
 // sumoFight
 const sumoFight = {
@@ -26,7 +26,7 @@ const sumoFight = {
   width: 216.4,
   height: 115.5,
 };
-sumoFight.img.src = "/assets/sumosFighting.png";
+sumoFight.img.src = "assets/sumosFighting.png";
 
 const resetSprite = (spriteObj, x, y) => {
   spriteObj.x = x;
