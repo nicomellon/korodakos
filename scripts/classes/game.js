@@ -28,6 +28,7 @@ class Game {
 
   switchSprites(playerOne, playerTwo) {
     // player one state
+    console.log("marco is here");
     if (playerOne.speed < 0.15) {
       playerOne.sprite.y = 0;
     } else {
@@ -39,6 +40,10 @@ class Game {
     } else {
       playerTwo.sprite.y = playerTwo.sprite.size * 6;
     }
+    if (playerOne.name.toLowerCase().includes("marco"))
+      playerOne.sprite.y = playerOne.sprite.size * 10;
+    if (playerTwo.name.toLowerCase().includes("marco"))
+      playerTwo.sprite.y = playerTwo.sprite.size * 10;
   }
 
   drawPlayers() {
@@ -158,9 +163,6 @@ class Game {
     );
 
     this.players.push(this.playerOne, this.playerTwo);
-
-    this.playerOne.easterEgg();
-    this.playerTwo.easterEgg();
 
     // add eventListeners to control players
     document.body.addEventListener("keydown", this.playerOne.handleKeyDown);

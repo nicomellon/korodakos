@@ -101,13 +101,6 @@ class Player {
       return true;
     } else return false;
   }
-
-  easterEgg = () => {
-    if (this.name.toLowerCase().includes("nico")) {
-      this.mass = 1e8;
-      this.acceleration = 0.15;
-    }
-  };
 }
 
 class PlayerOne extends Player {
