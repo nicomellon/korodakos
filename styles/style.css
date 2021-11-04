@@ -21,7 +21,7 @@
 }
 
 #game-board {
-  background-image: url("/assets/sumoRing.jpg");
+  background-image: url("./assets/sumoRing.jpg");
   background-size: cover;
   width: var(--container-length);
   height: var(--container-length);
