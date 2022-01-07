@@ -8,6 +8,8 @@ const clearBoard = () => {
 const switchScreens = () => {
   if (requestId) window.cancelAnimationFrame(requestId);
   clearBoard();
+  if (window.game) game.stop();
+  if (window.game) delete window.game;
 
   const gameState = gameBoard.dataset.screen;
 

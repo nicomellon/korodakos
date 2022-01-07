@@ -42,7 +42,11 @@ const buildGameScreen = () => {
   homeButton.addEventListener("click", switchScreens);
   gameBoard.appendChild(homeButton);
 
-  const game = new Game(
+  if (window.game) console.error("BEFORE");
+  if (window.game) delete window.game;
+  if (window.game) console.error("AFTER");
+
+  window.game = new Game(
     canvas,
     playerInfo.playerOneName,
     playerInfo.playerOneWeight,

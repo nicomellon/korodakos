@@ -22,23 +22,19 @@ class Game {
     this.players.forEach((player) => (player.canMove = true));
   }
 
-  disableMovement(player) {
+  disableMovement() {
     this.players.forEach((player) => (player.canMove = false));
   }
 
   switchSprites(playerOne, playerTwo) {
     // player one state
-    if (playerOne.speed < 0.15) {
-      playerOne.sprite.y = 0;
-    } else {
-      playerOne.sprite.y = playerOne.sprite.size * 6;
-    }
+    if (playerOne.speed < 0.15) playerOne.sprite.y = 0;
+    else playerOne.sprite.y = playerOne.sprite.size * 6;
+
     // player two state
-    if (playerTwo.speed < 0.15) {
-      playerTwo.sprite.y = 0;
-    } else {
-      playerTwo.sprite.y = playerTwo.sprite.size * 6;
-    }
+    if (playerTwo.speed < 0.15) playerTwo.sprite.y = 0;
+    else playerTwo.sprite.y = playerTwo.sprite.size * 6;
+
     if (playerOne.name.toLowerCase().includes("marco"))
       playerOne.sprite.y = playerOne.sprite.size * 10;
     if (playerTwo.name.toLowerCase().includes("marco"))
@@ -211,5 +207,9 @@ class Game {
     };
 
     this.requestId = window.requestAnimationFrame(loop);
+  }
+
+  stop() {
+    this.players = [];
   }
 }
