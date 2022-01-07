@@ -1,6 +1,7 @@
 # KORODAKOS
 
-Welcome to KORODAKOS, a multiplayer sumo wrestling game made as my first project at Ironhack's web development bootcamp
+A multiplayer sumo wrestling game made as my first project at Ironhack's web development bootcamp.
+Try it out [here](https://nicomellon.github.io/korodakos/)
 
 ## Choose you name, and weight
 
@@ -15,5 +16,3 @@ Welcome to KORODAKOS, a multiplayer sumo wrestling game made as my first project
 ## Winning
 
 Pushing the other play out of the ring will score you a point. First to 3 wins!
- 
-  
